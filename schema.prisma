@@ -9,24 +9,58 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model Student{
+  id String   @default(cuid())   @id
+  firstName  String
+  lastName String
+  birthDate  DateTime 
+  enrollmentYear Int
 
+  parent           Parent?        @relation(fields: [parentId], references: [id])
+  parentId         String?
 
+  class           Class?        @relation(fields: [classId], references: [id])
+  classId         String?
 
-model Post {
-  id        String     @default(cuid()) @id
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
+  classTeacher           Staff?        @relation(fields: [classTeacherId], references: [id])
+  classTeacherId       String?
+
+  scores           Score[]
 }
 
-model User {
-  id            String       @default(cuid()) @id
-  name          String?
-  email         String?   @unique
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  posts         Post[]
-  @@map(name: "users")
+
+model Score {
+  id String   @default(cuid())   @id
+  score Int
+  quarter Int
+  subjectName String
+  students Student[]
+}
+
+model Staff {
+  id String   @default(cuid())   @id
+  firstName String
+  lastName String
+  position String
+  birthDate  DateTime
+  isClassTeacher Boolean @default(false)
+  students      Student[]
+}
+
+
+model Class {
+  id String   @default(cuid())   @id
+  name String
+  capacity Int?
+  students      Student[]
+}
+
+model Parent {
+  id String   @default(cuid())   @id
+  firstName String
+  lastName String
+  role String
+  phoneNumber String
+  birthDate  DateTime?
+  childrens Student[]
 }
