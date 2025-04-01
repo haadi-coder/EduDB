@@ -13,7 +13,7 @@ model Student{
   id String   @default(cuid())   @id
   firstName  String
   lastName String
-  birthDate  DateTime 
+  birthDate String 
   enrollmentYear Int
 
   parent           Parent?        @relation(fields: [parentId], references: [id])
@@ -42,7 +42,7 @@ model Staff {
   firstName String
   lastName String
   position String
-  birthDate  DateTime
+  birthDate  String
   isClassTeacher Boolean @default(false)
   students      Student[]
 }
@@ -61,6 +61,6 @@ model Parent {
   lastName String
   role String
   phoneNumber String
-  birthDate  DateTime?
+  birthDate  String?
   childrens Student[]
 }

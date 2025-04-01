@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/core": "^7.17.3",
+    "@mantine/hooks": "^7.17.3",
     "@prisma/client": "^6.5.0",
+    "@tabler/icons-react": "^3.31.0",
+    "axios": "^1.8.4",
     "next": "15.2.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
