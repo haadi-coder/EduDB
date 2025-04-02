@@ -39,7 +39,7 @@ export const getStudents = async (searchParams: StudentSearchParams) => {
   const studentsBirthDateOptions: Handbook[] = data
     .map(student => ({
       value: student.id,
-      label: JSON.stringify(student.birthDate),
+      label: student.birthDate,
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 

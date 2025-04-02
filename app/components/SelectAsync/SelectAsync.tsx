@@ -14,7 +14,8 @@ import React, { FC, useState } from 'react';
 
 interface SelectAsyncProps {
   placeholder?: string;
-  fetchData: () => void;
+  fetchOptions: () => void;
+  fetchData?: () => void;
   options: Handbook[];
   value: Handbook | null;
   className?: string;
@@ -26,6 +27,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
   className,
   classNames,
   placeholder,
+  fetchOptions,
   fetchData,
   options,
   value,
@@ -37,8 +39,12 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
   const combobox = useCombobox({
     onDropdownOpen: async () => {
       setLoading(true);
-      await fetchData();
+      await fetchOptions();
       setLoading(false);
+    },
+
+    onDropdownClose: async () => {
+      await fetchData?.();
     },
   });
   return (
@@ -49,7 +55,6 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
         const newValue = val === value?.label ? null : val;
         const newId = options.find(item => item.label === newValue)?.value || '';
         onChange({ value: newId, label: newValue || '' });
-        combobox.closeDropdown();
       }}
     >
       <Combobox.Target>

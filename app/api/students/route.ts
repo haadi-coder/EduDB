@@ -29,7 +29,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   if (birthDate) {
-    where.birthDate = { gte: new Date(birthDate) };
+    where.birthDate = birthDate;
   }
 
   if (enrollmentYear) {
