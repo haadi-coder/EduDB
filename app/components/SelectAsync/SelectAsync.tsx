@@ -1,6 +1,14 @@
 'use client';
 import { Handbook } from '@/types/handbook';
-import { CheckIcon, Combobox, Loader, ScrollArea, TextInput, useCombobox } from '@mantine/core';
+import {
+  CheckIcon,
+  Combobox,
+  Loader,
+  ScrollArea,
+  SelectStylesNames,
+  TextInput,
+  useCombobox,
+} from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
 
@@ -10,11 +18,13 @@ interface SelectAsyncProps {
   options: Handbook[];
   value: Handbook | null;
   className?: string;
+  classNames?: Partial<Record<SelectStylesNames, string>>;
   onChange: (value: Handbook | null) => void;
 }
 
 export const SelectAsync: FC<SelectAsyncProps> = ({
   className,
+  classNames,
   placeholder,
   fetchData,
   options,
@@ -46,6 +56,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
         <TextInput
           {...rest}
           className={` ${className}`}
+          classNames={classNames}
           component="button"
           type="button"
           pointer
@@ -53,7 +64,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
           rightSectionPointerEvents="none"
           rightSection={
             loading ? (
-              <Loader size={18} />
+              <Loader color="#7c68ee" size={18} />
             ) : combobox.dropdownOpened ? (
               <IconChevronUp size={'18px'} />
             ) : (
@@ -61,11 +72,15 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
             )
           }
         >
-          {!!value?.label ? <span>{value?.label}</span> : <span>{placeholder}</span>}
+          {!!value?.label ? (
+            <span>{value?.label}</span>
+          ) : (
+            <span className="text-gray-400">{placeholder}</span>
+          )}
         </TextInput>
       </Combobox.Target>
 
-      <Combobox.Dropdown>
+      <Combobox.Dropdown classNames={classNames}>
         <Combobox.Options>
           {loading ? (
             <Combobox.Empty>Loading...</Combobox.Empty>
@@ -74,7 +89,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
           ) : (
             <ScrollArea.Autosize mah={220}>
               {options.map(option => (
-                <Combobox.Option value={option.label} key={option.label}>
+                <Combobox.Option classNames={classNames} value={option.label} key={option.label}>
                   <div
                     style={{
                       display: 'flex',

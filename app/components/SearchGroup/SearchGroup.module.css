@@ -1,10 +1,10 @@
-.input{
-    width: 300px;
-    background-color: #2e2e2e;
-    border-color: #484848;
-    color: white;
+.input {
+  width: 300px;
+  background-color: #2e2e2e;
+  border-color: #484848;
+  color: #c9c9c9;
 
-    &::placeholder{
-        color: grey;
-    }
+  &::placeholder {
+    color: grey;
+  }
 }

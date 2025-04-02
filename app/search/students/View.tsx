@@ -8,6 +8,7 @@ import { SelectAsync } from '@/app/components/SelectAsync';
 import { getStudents } from './getStudents';
 import { Handbook } from '@/types/handbook';
 import { StudentFilterOptions } from './types/StudentFilterOptions';
+import classes from './View.module.css';
 
 interface SelectedStudent {
   firstName: Handbook | null;
@@ -35,15 +36,18 @@ export const View: FC<ViewProps> = () => {
     studentsLastNameOptions: [],
   });
 
-  console.log(selectedFilters);
-
   return (
     <div className="mt-10 mx-10 flex gap-10">
       <SearchGroup value={searchValue} onChange={setSearchValue} onSubmit={() => {}} />
 
       <div className="flex w-full gap-3">
         <SelectAsync
-          className="w-full "
+          className="w-full"
+          classNames={{
+            input: classes.selectInput,
+            dropdown: classes.selectDropdown,
+            option: classes.selectOption,
+          }}
           placeholder="Имя ученика"
           options={filterOptions.studentsFirstNameOptions}
           fetchData={async () => {
@@ -58,6 +62,11 @@ export const View: FC<ViewProps> = () => {
         />
         <SelectAsync
           className="w-full"
+          classNames={{
+            input: classes.selectInput,
+            dropdown: classes.selectDropdown,
+            option: classes.selectOption,
+          }}
           placeholder="Фамилия ученика"
           options={filterOptions.studentsLastNameOptions}
           fetchData={async () => {
@@ -73,6 +82,11 @@ export const View: FC<ViewProps> = () => {
 
         <SelectAsync
           className="w-full"
+          classNames={{
+            input: classes.selectInput,
+            dropdown: classes.selectDropdown,
+            option: classes.selectOption,
+          }}
           placeholder="Дата рождения"
           options={filterOptions.studentsBirthDateOptions}
           fetchData={async () => {
@@ -87,6 +101,11 @@ export const View: FC<ViewProps> = () => {
 
         <SelectAsync
           className="w-full"
+          classNames={{
+            input: classes.selectInput,
+            dropdown: classes.selectDropdown,
+            option: classes.selectOption,
+          }}
           placeholder="Год поступления"
           options={filterOptions.studentsEnrollmentYearOptions}
           fetchData={async () => {

@@ -39,7 +39,7 @@ export const getStudents = async (searchParams: StudentSearchParams) => {
   const studentsBirthDateOptions: Handbook[] = data
     .map(student => ({
       value: student.id,
-      label: JSON.stringify(student.birthDate) 
+      label: JSON.stringify(student.birthDate),
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
@@ -56,8 +56,6 @@ export const getStudents = async (searchParams: StudentSearchParams) => {
     studentsEnrollmentYearOptions,
     studentsBirthDateOptions,
   };
-
-  console.log(studentFilterOptions)
 
   return { data: data, filterOptions: studentFilterOptions };
 };
