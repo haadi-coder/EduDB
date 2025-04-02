@@ -1,5 +1,4 @@
-import { axiosInstance } from '@/app/page';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Student } from './types/Student';
 import { Handbook } from '@/types/handbook';
 
@@ -12,15 +11,18 @@ export interface StudentSearchParams {
 }
 
 export const getStudents = async (searchParams: StudentSearchParams) => {
-  const { data } = await axiosInstance.get<unknown, AxiosResponse<Student[]>>('/students', {
-    params: {
-      s: searchParams.search,
-      fn: searchParams.firstName?.label,
-      ln: searchParams.lastName?.label,
-      bd: searchParams.birthDate?.label,
-      ey: searchParams.enrollmentYear?.label,
+  const { data } = await axios.get<unknown, AxiosResponse<Student[]>>(
+    `${process.env.BASE_URL}/api/students`,
+    {
+      params: {
+        s: searchParams.search,
+        fn: searchParams.firstName?.label,
+        ln: searchParams.lastName?.label,
+        bd: searchParams.birthDate?.label,
+        ey: searchParams.enrollmentYear?.label,
+      },
     },
-  });
+  );
 
   const studentsFirstNameOptions: Handbook[] = data
     .map(student => ({
