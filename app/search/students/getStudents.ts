@@ -12,7 +12,7 @@ export interface StudentSearchParams {
 
 export const getStudents = async (searchParams: StudentSearchParams) => {
   const { data } = await axios.get<unknown, AxiosResponse<Student[]>>(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/students`,
+    `http://localhost:3000/api/students`,
     {
       params: {
         s: searchParams.search,
