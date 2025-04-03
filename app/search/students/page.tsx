@@ -3,7 +3,6 @@ import React, { FC, useState } from 'react';
 import { SelectAsync } from '@/app/components/SelectAsync';
 import { ActionIcon, Center, Loader, Text } from '@mantine/core';
 import StudentsTable from '@/app/components/StudentsTable/StudentsTable';
-import { Student } from './types/Student';
 import classes from './Students.module.css';
 import { useStudentsFilterQuery } from './useStudentsFilterQuery';
 import { Handbook } from '@/types/handbook';
@@ -16,11 +15,7 @@ interface SelectedFilters {
   enrollmentYear: Handbook | null;
 }
 
-interface StudentProps {
-  data: Student[];
-}
-
-const Students: FC<StudentProps> = () => {
+const Students: FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     firstName: null,
     lastName: null,

@@ -83,7 +83,7 @@ export const useStudentsFilterQuery = (searchParams: StudentFilterSearchParams) 
 
       return response.data;
     },
-    placeholderData: keepPreviousData, 
+    placeholderData: keepPreviousData,
   });
 
   if (!data) {
