@@ -5,7 +5,7 @@ import { SearchGroup } from '@/app/components/SearchGroup';
 import { FC, useState } from 'react';
 import { Student } from './types/Student';
 import { SelectAsync } from '@/app/components/SelectAsync';
-import { getStudents } from './getStudents';
+import { getStudents } from './useStudentsFilterQuery';
 import { Handbook } from '@/types/handbook';
 import { StudentFilterOptions } from './types/StudentFilterOptions';
 import classes from './View.module.css';
@@ -163,7 +163,13 @@ export const View: FC<ViewProps> = ({ data }) => {
         </div>
       </div>
 
-      {students.length === 0 ? <Center h='30vh'><Text fz={20}>Ничего не найдено</Text> </Center>  : <StudentsTable data={students} />}
+      {students.length === 0 ? (
+        <Center h="30vh">
+          <Text fz={20}>Ничего не найдено</Text>{' '}
+        </Center>
+      ) : (
+        <StudentsTable data={students} />
+      )}
     </div>
   );
 };
