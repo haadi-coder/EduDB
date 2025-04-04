@@ -1,21 +1,20 @@
 'use client';
 
 import { usePagination } from '@/app/hooks/usePagination';
-import { Student } from '@/app/search/students/types/Student';
+import { Staff } from '@/app/search/staff/types/Staff';
 import { ActionIcon, Pagination, Table } from '@mantine/core';
-import { IconChecks, IconEdit, IconTrash } from '@tabler/icons-react';
-import classes from './StudentsTable.module.css';
-
-import React, { FC } from 'react';
 import { useToggle } from '@mantine/hooks';
+import { IconChecks, IconEdit, IconTrash } from '@tabler/icons-react';
+import React, { FC } from 'react';
+import classes from './StaffTable.module.css';
 
-interface StudentsTableProps {
-  data: Student[];
+interface StaffTableProps {
+  data: Staff[];
   withDelete?: boolean;
   deleteRows?: (ids: string) => void;
 }
-const StudentsTable: FC<StudentsTableProps> = ({ data, withDelete, deleteRows }) => {
-  const { currentItems, page, total, setPage } = usePagination<Student>(data);
+const StaffTable: FC<StaffTableProps> = ({ data, withDelete, deleteRows }) => {
+  const { currentItems, page, total, setPage } = usePagination<Staff>(data);
   const [isEditable, setIsEditable] = useToggle();
 
   const rows = currentItems.map(item => (
@@ -23,7 +22,7 @@ const StudentsTable: FC<StudentsTableProps> = ({ data, withDelete, deleteRows })
       <Table.Td>{item.firstName}</Table.Td>
       <Table.Td>{item.lastName}</Table.Td>
       <Table.Td>{item.birthDate}</Table.Td>
-      <Table.Td>{item.enrollmentYear}</Table.Td>
+      <Table.Td>{item.position}</Table.Td>
       {withDelete && isEditable && (
         <Table.Td p={10}>
           <ActionIcon color="red" variant="subtle" onClick={() => deleteRows?.(item.id)}>
@@ -50,7 +49,7 @@ const StudentsTable: FC<StudentsTableProps> = ({ data, withDelete, deleteRows })
           <Table.Th className="text-[18px] text-[#7c68ee]">Имя</Table.Th>
           <Table.Th className="text-[18px] text-[#7c68ee]">Фамилия</Table.Th>
           <Table.Th className="text-[18px] text-[#7c68ee]">Дата рождения</Table.Th>
-          <Table.Th className="text-[18px] text-[#7c68ee]">Год поступления</Table.Th>
+          <Table.Th className="text-[18px] text-[#7c68ee]">Должность</Table.Th>
           <Table.Th px={10} className="w-[40px]">
             <ActionIcon onClick={() => setIsEditable()} variant="subtle" color="#7c68ee">
               {!isEditable ? <IconEdit /> : <IconChecks />}
@@ -75,4 +74,4 @@ const StudentsTable: FC<StudentsTableProps> = ({ data, withDelete, deleteRows })
   );
 };
 
-export default StudentsTable;
+export default StaffTable;

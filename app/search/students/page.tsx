@@ -3,10 +3,10 @@ import React, { FC, useState } from 'react';
 import { SelectAsync } from '@/app/components/SelectAsync';
 import { ActionIcon, Center, Loader, Text } from '@mantine/core';
 import StudentsTable from '@/app/components/StudentsTable/StudentsTable';
-import classes from './Students.module.css';
 import { useStudentsFilterQuery } from './useStudentsFilterQuery';
 import { Handbook } from '@/types/handbook';
 import { IconReload } from '@tabler/icons-react';
+import { useStudentDelete } from './useStudentDelete';
 
 interface SelectedFilters {
   firstName: Handbook | null;
@@ -24,6 +24,7 @@ const Students: FC = () => {
   });
 
   const { data, refetch, filterOptions, isLoading } = useStudentsFilterQuery(selectedFilters);
+  const { mutateAsync: deleteStudent } = useStudentDelete();
 
   return (
     <div className="mt-10 mx-10">
@@ -32,11 +33,6 @@ const Students: FC = () => {
           <div className="flex w-full gap-3">
             <SelectAsync
               className="w-full"
-              classNames={{
-                input: classes.selectInput,
-                dropdown: classes.selectDropdown,
-                option: classes.selectOption,
-              }}
               placeholder="Имя ученика"
               options={filterOptions.studentsFirstNameOptions}
               fetchOptions={async () => {
@@ -49,11 +45,6 @@ const Students: FC = () => {
             />
             <SelectAsync
               className="w-full"
-              classNames={{
-                input: classes.selectInput,
-                dropdown: classes.selectDropdown,
-                option: classes.selectOption,
-              }}
               placeholder="Фамилия ученика"
               options={filterOptions.studentsLastNameOptions}
               fetchOptions={async () => {
@@ -65,11 +56,6 @@ const Students: FC = () => {
 
             <SelectAsync
               className="w-full"
-              classNames={{
-                input: classes.selectInput,
-                dropdown: classes.selectDropdown,
-                option: classes.selectOption,
-              }}
               placeholder="Дата рождения"
               options={filterOptions.studentsBirthDateOptions}
               fetchOptions={async () => {
@@ -81,11 +67,6 @@ const Students: FC = () => {
 
             <SelectAsync
               className="w-full"
-              classNames={{
-                input: classes.selectInput,
-                dropdown: classes.selectDropdown,
-                option: classes.selectOption,
-              }}
               placeholder="Год поступления"
               options={filterOptions.studentsEnrollmentYearOptions}
               fetchOptions={async () => {
@@ -101,13 +82,15 @@ const Students: FC = () => {
         </div>
 
         {isLoading ? (
-          <Loader />
+          <Center h="60vh">
+            <Loader />
+          </Center>
         ) : data.length === 0 ? (
           <Center h="30vh">
             <Text fz={20}>Ничего не найдено</Text>{' '}
           </Center>
         ) : (
-          <StudentsTable data={data} />
+          <StudentsTable withDelete deleteRows={deleteStudent} data={data} />
         )}
       </div>
     </div>

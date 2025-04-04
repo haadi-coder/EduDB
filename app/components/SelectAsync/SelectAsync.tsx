@@ -1,16 +1,9 @@
 'use client';
 import { Handbook } from '@/types/handbook';
-import {
-  CheckIcon,
-  Combobox,
-  Loader,
-  ScrollArea,
-  SelectStylesNames,
-  TextInput,
-  useCombobox,
-} from '@mantine/core';
+import { CheckIcon, Combobox, Loader, ScrollArea, TextInput, useCombobox } from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
+import classes from './SelectAsync.module.css';
 
 interface SelectAsyncProps {
   placeholder?: string;
@@ -19,13 +12,11 @@ interface SelectAsyncProps {
   options: Handbook[];
   value: Handbook | null;
   className?: string;
-  classNames?: Partial<Record<SelectStylesNames, string>>;
   onChange: (value: Handbook | null) => void;
 }
 
 export const SelectAsync: FC<SelectAsyncProps> = ({
   className,
-  classNames,
   placeholder,
   fetchOptions,
   fetchData,
@@ -61,7 +52,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
         <TextInput
           {...rest}
           className={` ${className}`}
-          classNames={classNames}
+          classNames={{ input: classes.selectInput }}
           component="button"
           type="button"
           pointer
@@ -85,7 +76,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
         </TextInput>
       </Combobox.Target>
 
-      <Combobox.Dropdown classNames={classNames}>
+      <Combobox.Dropdown classNames={{ dropdown: classes.selectDropdown }}>
         <Combobox.Options>
           {loading ? (
             <Combobox.Empty>Loading...</Combobox.Empty>
@@ -94,7 +85,11 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
           ) : (
             <ScrollArea.Autosize mah={220}>
               {options.map(option => (
-                <Combobox.Option classNames={classNames} value={option.label} key={option.label}>
+                <Combobox.Option
+                  classNames={{ option: classes.selectOption }}
+                  value={option.label}
+                  key={option.label}
+                >
                   <div
                     style={{
                       display: 'flex',
