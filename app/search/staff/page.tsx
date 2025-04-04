@@ -15,7 +15,7 @@ interface SelectedFilters {
   position: Handbook | null;
 }
 
-const Staff: FC<SelectedFilters> = () => {
+const Staff: FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     firstName: null,
     lastName: null,
