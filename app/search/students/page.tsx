@@ -83,7 +83,7 @@ const Students: FC = () => {
 
         {isLoading ? (
           <Center h="60vh">
-            <Loader />
+            <Loader color="#7c68ee" />
           </Center>
         ) : data.length === 0 ? (
           <Center h="30vh">
