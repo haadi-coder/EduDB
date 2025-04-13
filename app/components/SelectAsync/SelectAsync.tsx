@@ -7,7 +7,7 @@ import classes from './SelectAsync.module.css';
 
 interface SelectAsyncProps {
   placeholder?: string;
-  fetchOptions: () => void;
+  fetchOptions?: () => void;
   fetchData?: () => void;
   options: Handbook[];
   value: Handbook | null;
@@ -30,7 +30,7 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
   const combobox = useCombobox({
     onDropdownOpen: async () => {
       setLoading(true);
-      await fetchOptions();
+      await fetchOptions?.();
       setLoading(false);
     },
 

@@ -13,7 +13,35 @@ export const RootProvider = ({ children }) => {
 
   return (
     <>
-      <MantineProvider>
+      <MantineProvider
+        theme={{
+          components: {
+            TextInput: {
+              styles: () => ({
+                input: {
+                  backgroundColor: '#2e2e2e',
+                  borderColor: '#484848',
+                  color: '#c9c9c9',
+                },
+              }),
+            },
+            NumberInput: {
+              styles: () => ({
+                input: {
+                  backgroundColor: '#2e2e2e',
+                  borderColor: '#484848',
+                  color: '#c9c9c9',
+                },
+              }),
+            },
+            Combobox: {
+              styles: () => ({
+                dropdown: { backgroundColor: '#2e2e2e', borderColor: '#484848', color: '#c9c9c9' },
+              }),
+            },
+          },
+        }}
+      >
         <QueryClientProvider client={client}>
           <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
         </QueryClientProvider>

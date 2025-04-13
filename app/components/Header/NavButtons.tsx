@@ -49,24 +49,14 @@ export const NavButtons: FC = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item component={Link} href="/create/vehicle">
+          <Menu.Item component={Link} href="/create/student">
             Добавить Ученика
           </Menu.Item>
-          <Menu.Item component={Link} href="/create/manufacturer">
+          <Menu.Item component={Link} href="/create/staff">
             Добавить Персонал
           </Menu.Item>
-          <Menu.Item component={Link} href="/create/tech-specifications">
+          <Menu.Item component={Link} href="/create/parent">
             Добавить Родителя
-          </Menu.Item>
-
-          <Menu.Item component={Link} href="/delete/vehicle">
-            Удалить Ученика
-          </Menu.Item>
-          <Menu.Item component={Link} href="/delete/manufacturer">
-            Удалить Персонал
-          </Menu.Item>
-          <Menu.Item component={Link} href="/delete/tech-specifications">
-            Удалить Родителя
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
