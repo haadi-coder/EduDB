@@ -6,6 +6,6 @@ export interface Staff {
   lastName: string;
   birthDate: string;
   position: string;
-  isClassTeacher: string;
+  isClassTeacher: boolean;
   students: Student[];
 }

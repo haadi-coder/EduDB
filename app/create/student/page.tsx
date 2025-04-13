@@ -8,10 +8,22 @@ import { StudentFormValues } from './types/StudentFormValues';
 import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
 import { Handbook } from '@/types/handbook';
 import { useClassesFilterQuery } from '@/app/search/classes/useClassesFilterQuery';
+import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
+import axios from 'axios';
+
+const createStudent = async (data: StudentFormValues) => {
+  const response = await axios.post(`/api/students`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return { status: response.status, data: response.data };
+};
 
 const CreateStudent: FC = () => {
   const [selectedParent, setSelectedParent] = useState<Handbook | null>();
   const [selectedClass, setSelectedClass] = useState<Handbook | null>();
+  const [selectedClassTeacher, setSelectedClassTeacher] = useState<Handbook | null>();
   const form = useForm<StudentFormValues>({
     mode: 'controlled',
     initialValues: {
@@ -33,9 +45,21 @@ const CreateStudent: FC = () => {
 
   const { filterOptions: parents } = useParentFilterQuery();
   const { filterOptions: classes } = useClassesFilterQuery();
+  const { filterOptions: classTeachers } = useStaffFilterQuery();
+
+  const handleSubmit = (formValues: StudentFormValues) => {
+    createStudent(formValues);
+    form.reset();
+    setSelectedClass(null);
+    setSelectedClassTeacher(null);
+    setSelectedParent(null);
+  };
 
   return (
-    <form className="h-[48vh] mt-10 mx-122 p-10  bg-[#24263a] rounded-lg">
+    <form
+      onSubmit={form.onSubmit(values => handleSubmit(values))}
+      className="h-[48vh] mt-10 mx-122 p-10  bg-[#24263a] rounded-lg"
+    >
       <Grid>
         <Grid.Col span={6}>
           <TextInput
@@ -90,10 +114,12 @@ const CreateStudent: FC = () => {
           <SelectAsync
             placeholder="Классный руководитель"
             className="mt-5"
-            options={[]}
-            fetchOptions={() => {}}
-            value={{ value: '', label: '' }}
-            onChange={() => {}}
+            options={classTeachers.staffClassTeacherOptions}
+            value={selectedClassTeacher || null}
+            onChange={payload => {
+              setSelectedClassTeacher(payload);
+              form.setFieldValue('classTeacherId', payload?.value || null);
+            }}
           />
         </Grid.Col>
       </Grid>

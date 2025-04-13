@@ -10,22 +10,22 @@ export interface StaffFilterSearchParams {
   position: Handbook | null;
 }
 
-export const useStaffFilterQuery = (searchParams: StaffFilterSearchParams) => {
+export const useStaffFilterQuery = (searchParams?: StaffFilterSearchParams) => {
   const { data, ...rest } = useQuery<Staff[]>({
     queryKey: [
       'staff',
-      searchParams.lastName,
-      searchParams.birthDate,
-      searchParams.firstName,
-      searchParams.position,
+      searchParams?.lastName,
+      searchParams?.birthDate,
+      searchParams?.firstName,
+      searchParams?.position,
     ],
     queryFn: async (): Promise<Staff[]> => {
       const response = await axios.get<unknown, AxiosResponse<Staff[]>>(`/api/staff`, {
         params: {
-          fn: searchParams.firstName?.label,
-          ln: searchParams.lastName?.label,
-          bd: searchParams.birthDate?.label,
-          p: searchParams.position?.label,
+          fn: searchParams?.firstName?.label,
+          ln: searchParams?.lastName?.label,
+          bd: searchParams?.birthDate?.label,
+          p: searchParams?.position?.label,
         },
       });
 
@@ -42,6 +42,7 @@ export const useStaffFilterQuery = (searchParams: StaffFilterSearchParams) => {
         staffPositionOptions: [],
         staffFirstNameOptions: [],
         staffLastNameOptions: [],
+        staffClassTeacherOptions: [],
       },
       ...rest,
     };
@@ -75,11 +76,20 @@ export const useStaffFilterQuery = (searchParams: StaffFilterSearchParams) => {
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
+  const staffClassTeacherOptions: Handbook[] = data
+    .filter(item => item.isClassTeacher === true)
+    .map(staff => ({
+      value: staff.id,
+      label: `${staff.lastName} ${staff.firstName}`,
+    }))
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+
   const staffFilterOptions = {
     staffFirstNameOptions,
     staffLastNameOptions,
     staffPositionOptions,
     staffBirthDateOptions,
+    staffClassTeacherOptions,
   };
 
   return { data: data, filterOptions: staffFilterOptions, ...rest };
