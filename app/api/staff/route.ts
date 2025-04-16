@@ -55,6 +55,7 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   const requestData = await request.json();
+  const studentIds: string[] = requestData.studentIds;
 
   const newStaff = await prisma.staff.create({
     data: {
@@ -63,7 +64,7 @@ export const POST = async (request: NextRequest) => {
       birthDate: requestData.birthDate,
       position: requestData.position,
       isClassTeacher: requestData.isClassTeacher,
-      students: requestData.students,
+      students: { connect: studentIds.map(student => ({ id: student })) },
     },
   });
 

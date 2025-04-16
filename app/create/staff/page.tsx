@@ -1,17 +1,17 @@
 'use client';
 
 import { Handbook } from '@/types/handbook';
-import { Button, Flex, Grid, Group, TextInput } from '@mantine/core';
+import { Button, Flex, Grid, Group, Stack, Switch, Text, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
-import { ParentFormValues } from './types/ParentFormValues';
 import { IconPlus } from '@tabler/icons-react';
-import { SelectAsync } from '@/app/components/SelectAsync';
 import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQuery';
 import axios from 'axios';
+import { StaffFormValues } from './types/StaffFormValues';
+import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
 
-const createParent = async (data: ParentFormValues) => {
-  const response = await axios.post(`/api/parents`, data, {
+const createStaff = async (data: StaffFormValues) => {
+  const response = await axios.post(`/api/staff`, data, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -19,40 +19,39 @@ const createParent = async (data: ParentFormValues) => {
   return { status: response.status, data: response.data };
 };
 
-const CreateParent: FC = () => {
-  const [selectedChild, setSelectedChild] = useState<Handbook | null>();
+const CreateStaff: FC = () => {
+  const [selectedStudents, setSelectedStudents] = useState<Handbook[]>([]);
 
-  const form = useForm<ParentFormValues>({
+  const form = useForm<StaffFormValues>({
     mode: 'controlled',
     initialValues: {
       firstName: '',
       lastName: '',
       birthDate: '',
-      childrenIds: [],
-      phoneNumber: '',
-      role: '',
+      isClassTeacher: false,
+      position: '',
+      studentIds: [],
     },
     validate: {
       firstName: isNotEmpty(),
       lastName: isNotEmpty(),
       birthDate: isNotEmpty(),
-      phoneNumber: isNotEmpty(),
-      role: isNotEmpty(),
+      position: isNotEmpty(),
     },
   });
 
   const { filterOptions: children } = useStudentsFilterQuery();
 
-  const handleSubmit = (formValues: ParentFormValues) => {
-    createParent(formValues);
+  const handleSubmit = (formValues: StaffFormValues) => {
+    createStaff(formValues);
     form.reset();
-    setSelectedChild(null);
+    setSelectedStudents([]);
   };
 
   return (
     <form
       onSubmit={form.onSubmit(values => handleSubmit(values))}
-      className="h-[52vh] mt-10 mx-90 p-10  bg-[#24263a] rounded-lg"
+      className="h-[52vh] mt-10 mx-100 p-10  bg-[#24263a] rounded-lg"
     >
       <Grid>
         <Grid.Col span={6}>
@@ -72,7 +71,7 @@ const CreateParent: FC = () => {
             className="w-full mt-5"
             label="Роль"
             placeholder="Введите роль..."
-            {...form.getInputProps('role')}
+            {...form.getInputProps('position')}
           />
         </Grid.Col>
         <Grid.Col span={6}>
@@ -82,22 +81,30 @@ const CreateParent: FC = () => {
             placeholder="Введите имя..."
             {...form.getInputProps('firstName')}
           />
-          <TextInput
-            className="w-full mt-5"
-            label="Номер телефона"
-            placeholder="Введите номер..."
-            {...form.getInputProps('phoneNumber')}
-          />
-          <SelectAsync
-            placeholder="Ребенок"
-            className="mt-11"
+
+          <MultiSelectAsync
+            placeholder="Ученики"
+            className="mt-11 text-white"
             options={children.studentsOptions}
-            value={selectedChild || null}
+            value={selectedStudents}
             onChange={payload => {
-              setSelectedChild(payload);
-              form.setFieldValue('childrenIds', [payload?.value || '']);
+              setSelectedStudents(payload);
+              form.setFieldValue(
+                'studentIds',
+                payload.map(item => item.value),
+              );
             }}
           />
+          <Stack className="mt-7" gap={8}>
+            <Text size="14px">Классный руководитель</Text>
+            <Switch
+              className="w-full mt-2"
+              size="md"
+              labelPosition="left"
+              placeholder="Введите номер..."
+              {...form.getInputProps('isClassTeacher')}
+            />
+          </Stack>
         </Grid.Col>
       </Grid>
 
@@ -112,4 +119,4 @@ const CreateParent: FC = () => {
   );
 };
 
-export default CreateParent;
+export default CreateStaff;
