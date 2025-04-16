@@ -6,9 +6,9 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
 import { ParentFormValues } from './types/ParentFormValues';
 import { IconPlus } from '@tabler/icons-react';
-import { SelectAsync } from '@/app/components/SelectAsync';
 import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQuery';
 import axios from 'axios';
+import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
 
 const createParent = async (data: ParentFormValues) => {
   const response = await axios.post(`/api/parents`, data, {
@@ -20,7 +20,7 @@ const createParent = async (data: ParentFormValues) => {
 };
 
 const CreateParent: FC = () => {
-  const [selectedChild, setSelectedChild] = useState<Handbook | null>();
+  const [selectedChildren, setSelectedChildren] = useState<Handbook[]>([]);
 
   const form = useForm<ParentFormValues>({
     mode: 'controlled',
@@ -46,7 +46,7 @@ const CreateParent: FC = () => {
   const handleSubmit = (formValues: ParentFormValues) => {
     createParent(formValues);
     form.reset();
-    setSelectedChild(null);
+    setSelectedChildren([]);
   };
 
   return (
@@ -88,14 +88,17 @@ const CreateParent: FC = () => {
             placeholder="Введите номер..."
             {...form.getInputProps('phoneNumber')}
           />
-          <SelectAsync
+          <MultiSelectAsync
             placeholder="Ребенок"
             className="mt-11"
             options={children.studentsOptions}
-            value={selectedChild || null}
+            value={selectedChildren}
             onChange={payload => {
-              setSelectedChild(payload);
-              form.setFieldValue('childrenIds', [payload?.value || '']);
+              setSelectedChildren(payload);
+              form.setFieldValue(
+                'childrenIds',
+                payload.map(item => item.value),
+              );
             }}
           />
         </Grid.Col>
