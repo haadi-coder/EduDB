@@ -5,7 +5,6 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import { IconPlus } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
 import { StudentFormValues } from './types/StudentFormValues';
-import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
 import { Handbook } from '@/types/handbook';
 import { useClassesFilterQuery } from '@/app/search/classes/useClassesFilterQuery';
 import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
@@ -21,7 +20,6 @@ const createStudent = async (data: StudentFormValues) => {
 };
 
 const CreateStudent: FC = () => {
-  const [selectedParent, setSelectedParent] = useState<Handbook | null>();
   const [selectedClass, setSelectedClass] = useState<Handbook | null>();
   const [selectedClassTeacher, setSelectedClassTeacher] = useState<Handbook | null>();
   const form = useForm<StudentFormValues>({
@@ -43,7 +41,6 @@ const CreateStudent: FC = () => {
     },
   });
 
-  const { filterOptions: parents } = useParentFilterQuery();
   const { filterOptions: classes } = useClassesFilterQuery();
   const { filterOptions: classTeachers } = useStaffFilterQuery();
 
@@ -52,13 +49,12 @@ const CreateStudent: FC = () => {
     form.reset();
     setSelectedClass(null);
     setSelectedClassTeacher(null);
-    setSelectedParent(null);
   };
 
   return (
     <form
       onSubmit={form.onSubmit(values => handleSubmit(values))}
-      className="h-[48vh] mt-10 mx-122 p-10  bg-[#24263a] rounded-lg"
+      className="h-[48vh] mt-10 mx-100 p-10  bg-[#24263a] rounded-lg"
     >
       <Grid>
         <Grid.Col span={6}>
@@ -73,16 +69,6 @@ const CreateStudent: FC = () => {
             label="Дата рождения"
             placeholder="Введите дату рождения..."
             {...form.getInputProps('birthDate')}
-          />
-          <SelectAsync
-            placeholder="Родитель"
-            className="mt-5"
-            options={parents.parentsOptions}
-            value={selectedParent || null}
-            onChange={payload => {
-              setSelectedParent(payload);
-              form.setFieldValue('parentId', payload?.value || null);
-            }}
           />
         </Grid.Col>
         <Grid.Col span={6}>
@@ -111,6 +97,8 @@ const CreateStudent: FC = () => {
               }}
             />
           </div>
+        </Grid.Col>
+        <Grid.Col>
           <SelectAsync
             placeholder="Классный руководитель"
             className="mt-5"
