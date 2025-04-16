@@ -1,0 +1,116 @@
+'use client';
+
+import { Handbook } from '@/types/handbook';
+import { Button, Flex, Grid, Group, TextInput } from '@mantine/core';
+import { isNotEmpty, useForm } from '@mantine/form';
+import React, { FC, useState } from 'react';
+import { ParentFormValues } from './types/ParentFormValues';
+import { IconPlus } from '@tabler/icons-react';
+import { SelectAsync } from '@/app/components/SelectAsync';
+import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQuery';
+import axios from 'axios';
+
+const createParent = async (data: ParentFormValues) => {
+  const response = await axios.post(`/api/parents`, data, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return { status: response.status, data: response.data };
+};
+
+const CreateParent: FC = () => {
+  const [selectedChild, setSelectedChild] = useState<Handbook | null>();
+
+  const form = useForm<ParentFormValues>({
+    mode: 'controlled',
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      birthDate: '',
+      childrenIds: [],
+      phoneNumber: '',
+      role: '',
+    },
+    validate: {
+      firstName: isNotEmpty(),
+      lastName: isNotEmpty(),
+      birthDate: isNotEmpty(),
+      phoneNumber: isNotEmpty(),
+      childrenIds: isNotEmpty(),
+      role: isNotEmpty(),
+    },
+  });
+
+  const { filterOptions: children } = useStudentsFilterQuery();
+
+  const handleSubmit = (formValues: ParentFormValues) => {
+    createParent(formValues);
+    form.reset();
+    setSelectedChild(null);
+  };
+
+  return (
+    <form
+      onSubmit={form.onSubmit(values => handleSubmit(values))}
+      className="h-[52vh] mt-10 mx-122 p-10  bg-[#24263a] rounded-lg"
+    >
+      <Grid>
+        <Grid.Col span={6}>
+          <TextInput
+            className="w-full"
+            label="Фамилия"
+            placeholder="Введите фамилию..."
+            {...form.getInputProps('lastName')}
+          />
+          <TextInput
+            className="w-full mt-5"
+            label="Дата рождения"
+            placeholder="Введите дату рождения..."
+            {...form.getInputProps('birthDate')}
+          />
+          <TextInput
+            className="w-full mt-5"
+            label="Роль"
+            placeholder="Введите роль..."
+            {...form.getInputProps('role')}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <TextInput
+            className="w-full"
+            label="Имя"
+            placeholder="Введите имя..."
+            {...form.getInputProps('firstName')}
+          />
+          <TextInput
+            className="w-full mt-5"
+            label="Номер телефона"
+            placeholder="Введите номер..."
+            {...form.getInputProps('phoneNumber')}
+          />
+          <SelectAsync
+            placeholder="Ребенок"
+            className="mt-11"
+            options={children.studentsOptions}
+            value={selectedChild || null}
+            onChange={payload => {
+              setSelectedChild(payload);
+              form.setFieldValue('childrenIds', [payload?.value || '']);
+            }}
+          />
+        </Grid.Col>
+      </Grid>
+
+      <Flex justify="end">
+        <Group className="mt-8">
+          <Button disabled={!form.isValid()} color="#7c68ee" type="submit">
+            Добавить <IconPlus size={16} className="ml-3" />
+          </Button>
+        </Group>
+      </Flex>
+    </form>
+  );
+};
+
+export default CreateParent;
