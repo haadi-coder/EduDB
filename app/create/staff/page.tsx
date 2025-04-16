@@ -83,6 +83,7 @@ const CreateStaff: FC = () => {
           />
 
           <MultiSelectAsync
+            disabled={!form.values.isClassTeacher}
             placeholder="Ученики"
             className="mt-11 text-white"
             options={children.studentsOptions}

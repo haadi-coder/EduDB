@@ -6,6 +6,7 @@ import React, { FC, useState } from 'react';
 import classes from '../components/SelectAsync/SelectAsync.module.css';
 
 interface MultiSelectAsyncProps {
+  disabled?: boolean;
   placeholder?: string;
   fetchOptions?: () => void;
   fetchData?: () => void;
@@ -17,6 +18,7 @@ interface MultiSelectAsyncProps {
 
 export const MultiSelectAsync: FC<MultiSelectAsyncProps> = ({
   className,
+  disabled = false,
   placeholder,
   fetchOptions,
   fetchData,
@@ -56,6 +58,7 @@ export const MultiSelectAsync: FC<MultiSelectAsyncProps> = ({
       <Combobox.Target>
         <TextInput
           {...rest}
+          disabled={disabled}
           className={`${className}`}
           component="button"
           type="button"
