@@ -9,8 +9,8 @@ export const NavButtons: FC = () => {
 
   return (
     <div className="flex justify-center gap-4">
-      <Button color="#7c68ee" variant={currentPathname === '/statistics' ? 'filled' : 'subtle'}>
-        <Link href="/statistics">Статистика</Link>
+      <Button color="#7c68ee" variant={currentPathname === '/' ? 'filled' : 'subtle'}>
+        <Link href="/">Статистика</Link>
       </Button>
 
       <Menu trigger="click">
