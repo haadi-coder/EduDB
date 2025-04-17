@@ -13,13 +13,6 @@ export default function Home() {
     5,
   );
 
-  const studentsCountByAgeGroups = Object.entries(statistics?.studentsCountByAgeGroups || {}).map(
-    ([key, value]) => ({
-      key,
-      value,
-    }),
-  );
-
   return (
     <main className="pt-10 px-20">
       <Flex gap={20} justify="space-between">
@@ -103,27 +96,6 @@ export default function Home() {
               mt="sm"
             />
           </div>
-        </Box>
-
-        <Box className="py-5 px-10 bg-[#2e2e2e] w-full rounded-2xl h-full min-h-[400px]  flex flex-col justify-between">
-          <Stack gap={12} className="h-[65%] mt-4">
-            <Text>Количество учеников по возрастам</Text>
-            {isLoading ? (
-              <Center h="20vh">
-                <Loader color="#7c68ee" />
-              </Center>
-            ) : (
-              studentsCountByAgeGroups?.map(item => (
-                <div
-                  key={item.key}
-                  className="flex justify-between bg-[#ede9fe1c] px-4 py-2 rounded-lg hover:bg-[#7c68ee31]"
-                >
-                  <Text>{item.key} лет</Text>
-                  <Text>{item.value} чел.</Text>
-                </div>
-              ))
-            )}
-          </Stack>
         </Box>
       </Flex>
     </main>

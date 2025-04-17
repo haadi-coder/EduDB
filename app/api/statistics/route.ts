@@ -59,21 +59,24 @@ export const GET = async () => {
     });
 
     const ageGroups = {
-      '6-12': 0,
+      '6-9': 0,
       '13-15': 0,
       '16-18': 0,
+      '10-12': 0,
       '19+': 0,
     };
 
     allStudents.forEach(student => {
       const age = calculateAge(student.birthDate);
 
-      if (age >= 6 && age <= 12) {
-        ageGroups['6-12']++;
+      if (age >= 6 && age <= 9) {
+        ageGroups['6-9']++;
       } else if (age >= 13 && age <= 15) {
         ageGroups['13-15']++;
       } else if (age >= 16 && age <= 18) {
         ageGroups['16-18']++;
+      } else if (age >= 10 && age <= 12) {
+        ageGroups['10-12']++;
       } else {
         ageGroups['19+']++;
       }
