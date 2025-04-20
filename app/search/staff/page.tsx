@@ -33,6 +33,16 @@ const Staff: FC = () => {
           <div className="flex w-full gap-3">
             <SelectAsync
               className="w-full"
+              placeholder="Должность"
+              options={filterOptions.staffPositionOptions}
+              fetchOptions={async () => {
+                setSelectedFilters(prev => ({ ...prev, position: null }));
+              }}
+              value={selectedFilters.position}
+              onChange={item => setSelectedFilters(prev => ({ ...prev, position: item }))}
+            />
+            <SelectAsync
+              className="w-full"
               placeholder="Имя работника"
               options={filterOptions.staffFirstNameOptions}
               fetchOptions={async () => {
@@ -64,17 +74,6 @@ const Staff: FC = () => {
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
             />
-
-            <SelectAsync
-              className="w-full"
-              placeholder="Должность"
-              options={filterOptions.staffPositionOptions}
-              fetchOptions={async () => {
-                setSelectedFilters(prev => ({ ...prev, position: null }));
-              }}
-              value={selectedFilters.position}
-              onChange={item => setSelectedFilters(prev => ({ ...prev, position: item }))}
-            />
           </div>
           <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />
@@ -83,7 +82,7 @@ const Staff: FC = () => {
 
         {isLoading ? (
           <Center h="60vh">
-            <Loader color='#7c68ee'/>
+            <Loader color="#7c68ee" />
           </Center>
         ) : data.length === 0 ? (
           <Center h="30vh">

@@ -33,6 +33,16 @@ const Students: FC = () => {
           <div className="flex w-full gap-3">
             <SelectAsync
               className="w-full"
+              placeholder="Год поступления"
+              options={filterOptions.studentsEnrollmentYearOptions}
+              fetchOptions={async () => {
+                setSelectedFilters(prev => ({ ...prev, enrollmentYear: null }));
+              }}
+              value={selectedFilters.enrollmentYear}
+              onChange={item => setSelectedFilters(prev => ({ ...prev, enrollmentYear: item }))}
+            />
+            <SelectAsync
+              className="w-full"
               placeholder="Имя ученика"
               options={filterOptions.studentsFirstNameOptions}
               fetchOptions={async () => {
@@ -63,17 +73,6 @@ const Students: FC = () => {
               }}
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
-            />
-
-            <SelectAsync
-              className="w-full"
-              placeholder="Год поступления"
-              options={filterOptions.studentsEnrollmentYearOptions}
-              fetchOptions={async () => {
-                setSelectedFilters(prev => ({ ...prev, enrollmentYear: null }));
-              }}
-              value={selectedFilters.enrollmentYear}
-              onChange={item => setSelectedFilters(prev => ({ ...prev, enrollmentYear: item }))}
             />
           </div>
           <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">

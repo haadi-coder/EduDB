@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Handbook } from '@/types/handbook';
 import React, { FC, useState } from 'react';
 import { useParentFilterQuery } from './useParentsFilterQuery';
@@ -33,6 +33,16 @@ const Parents: FC = () => {
           <div className="flex w-full gap-3">
             <SelectAsync
               className="w-full"
+              placeholder="Роль в семье"
+              options={filterOptions.parentsRoleOptions}
+              fetchOptions={async () => {
+                setSelectedFilters(prev => ({ ...prev, role: null }));
+              }}
+              value={selectedFilters.role}
+              onChange={item => setSelectedFilters(prev => ({ ...prev, role: item }))}
+            />
+            <SelectAsync
+              className="w-full"
               placeholder="Имя родителя"
               options={filterOptions.parentsFirstNameOptions}
               fetchOptions={async () => {
@@ -64,17 +74,6 @@ const Parents: FC = () => {
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
             />
-
-            <SelectAsync
-              className="w-full"
-              placeholder="Роль в семье"
-              options={filterOptions.parentsRoleOptions}
-              fetchOptions={async () => {
-                setSelectedFilters(prev => ({ ...prev, role: null }));
-              }}
-              value={selectedFilters.role}
-              onChange={item => setSelectedFilters(prev => ({ ...prev, role: item }))}
-            />
           </div>
           <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />
@@ -83,7 +82,7 @@ const Parents: FC = () => {
 
         {isLoading ? (
           <Center h="60vh">
-            <Loader color='#7c68ee'/>
+            <Loader color="#7c68ee" />
           </Center>
         ) : data.length === 0 ? (
           <Center h="30vh">
