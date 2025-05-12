@@ -1,6 +1,6 @@
 'use client';
 import { SelectAsync } from '@/app/components/SelectAsync';
-import { Button, Flex, Grid, Group, NumberInput, TextInput } from '@mantine/core';
+import { Button, Flex, Grid, Group, NumberInput, TextInput, Title } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { IconPlus } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
@@ -52,74 +52,77 @@ const CreateStudent: FC = () => {
   };
 
   return (
-    <form
-      onSubmit={form.onSubmit(values => handleSubmit(values))}
-      className="h-[48vh] mt-10 mx-100 p-10  bg-[#24263a] rounded-lg"
-    >
-      <Grid>
-        <Grid.Col span={6}>
-          <TextInput
-            className="w-full"
-            label="Фамилия"
-            placeholder="Введите фамилию..."
-            {...form.getInputProps('lastName')}
-          />
-          <TextInput
-            className="w-full mt-5"
-            label="Дата рождения"
-            placeholder="Введите дату рождения..."
-            {...form.getInputProps('birthDate')}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <TextInput
-            className="w-full"
-            label="Имя"
-            placeholder="Введите имя..."
-            {...form.getInputProps('firstName')}
-          />
-
-          <div className="flex gap-5">
-            <NumberInput
-              className="mt-5 "
-              label="Год поступления"
-              placeholder="Введите год..."
-              {...form.getInputProps('enrollmentYear')}
+    <div className="flex flex-col items-center">
+      <Title mt={40}>Добавление ученика</Title>
+      <form
+        onSubmit={form.onSubmit(values => handleSubmit(values))}
+        className="h-[48vh] mt-12 mx-100 p-10  bg-[#24263a] rounded-lg"
+      >
+        <Grid>
+          <Grid.Col span={6}>
+            <TextInput
+              className="w-full"
+              label="Фамилия"
+              placeholder="Введите фамилию..."
+              {...form.getInputProps('lastName')}
             />
+            <TextInput
+              className="w-full mt-5"
+              label="Дата рождения"
+              placeholder="Введите дату рождения..."
+              {...form.getInputProps('birthDate')}
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <TextInput
+              className="w-full"
+              label="Имя"
+              placeholder="Введите имя..."
+              {...form.getInputProps('firstName')}
+            />
+
+            <div className="flex gap-5">
+              <NumberInput
+                className="mt-5 "
+                label="Год поступления"
+                placeholder="Введите год..."
+                {...form.getInputProps('enrollmentYear')}
+              />
+              <SelectAsync
+                placeholder="класс"
+                className="mt-11 w-full flex-7/12"
+                options={classes.classesNames}
+                value={selectedClass || null}
+                onChange={payload => {
+                  setSelectedClass(payload);
+                  form.setFieldValue('classId', payload?.value || null);
+                }}
+              />
+            </div>
+          </Grid.Col>
+          <Grid.Col>
             <SelectAsync
-              placeholder="класс"
-              className="mt-11 w-full flex-7/12"
-              options={classes.classesNames}
-              value={selectedClass || null}
+              placeholder="Классный руководитель"
+              className="mt-5"
+              options={classTeachers.staffClassTeacherOptions}
+              value={selectedClassTeacher || null}
               onChange={payload => {
-                setSelectedClass(payload);
-                form.setFieldValue('classId', payload?.value || null);
+                setSelectedClassTeacher(payload);
+                form.setFieldValue('classTeacherId', payload?.value || null);
               }}
             />
-          </div>
-        </Grid.Col>
-        <Grid.Col>
-          <SelectAsync
-            placeholder="Классный руководитель"
-            className="mt-5"
-            options={classTeachers.staffClassTeacherOptions}
-            value={selectedClassTeacher || null}
-            onChange={payload => {
-              setSelectedClassTeacher(payload);
-              form.setFieldValue('classTeacherId', payload?.value || null);
-            }}
-          />
-        </Grid.Col>
-      </Grid>
+          </Grid.Col>
+        </Grid>
 
-      <Flex justify="end">
-        <Group className="mt-8">
-          <Button disabled={!form.isValid()} color="#7c68ee" type="submit">
-            Добавить <IconPlus size={16} className="ml-3" />
-          </Button>
-        </Group>
-      </Flex>
-    </form>
+        <Flex justify="end">
+          <Group className="mt-8">
+            <Button disabled={!form.isValid()} color="#7c68ee" type="submit">
+              Добавить <IconPlus size={16} className="ml-3" />
+            </Button>
+          </Group>
+        </Flex>
+      </form>
+    </div>
   );
 };
 

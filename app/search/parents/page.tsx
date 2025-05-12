@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 import { useParentFilterQuery } from './useParentsFilterQuery';
 import { useParentDelete } from './useParentDelete';
 import { SelectAsync } from '@/app/components/SelectAsync';
-import { ActionIcon, Center, Loader, Text } from '@mantine/core';
+import { ActionIcon, Center, Loader, Text, Title } from '@mantine/core';
 import { IconReload } from '@tabler/icons-react';
 import ParentsTable from '@/app/components/ParentsTable/ParentsTable';
 
@@ -27,8 +27,9 @@ const Parents: FC = () => {
   const { mutateAsync: deleteParent } = useParentDelete();
 
   return (
-    <div className="mt-10 mx-10">
-      <div className="mt-20 mx-10 ">
+    <div className="mt-10 mx-20">
+      <div>
+        <Title mb={30}>Поиск родителя</Title>
         <div className="flex gap-6">
           <div className="flex w-full gap-3">
             <SelectAsync

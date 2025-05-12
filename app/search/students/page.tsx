@@ -1,7 +1,7 @@
 'use client';
 import React, { FC, useState } from 'react';
 import { SelectAsync } from '@/app/components/SelectAsync';
-import { ActionIcon, Center, Loader, Text } from '@mantine/core';
+import { ActionIcon, Center, Loader, Text, Title } from '@mantine/core';
 import StudentsTable from '@/app/components/StudentsTable/StudentsTable';
 import { useStudentsFilterQuery } from './useStudentsFilterQuery';
 import { Handbook } from '@/types/handbook';
@@ -27,8 +27,9 @@ const Students: FC = () => {
   const { mutateAsync: deleteStudent } = useStudentDelete();
 
   return (
-    <div className="mt-10 mx-10">
-      <div className="mt-20 mx-10 ">
+    <div className="mt-10 mx-20">
+      <div>
+        <Title mb={30}>Поиск ученика </Title>
         <div className="flex gap-6">
           <div className="flex w-full gap-3">
             <SelectAsync

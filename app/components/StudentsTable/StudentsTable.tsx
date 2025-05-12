@@ -15,7 +15,7 @@ interface StudentsTableProps {
   deleteRows?: (ids: string) => void;
 }
 const StudentsTable: FC<StudentsTableProps> = ({ data, withDelete, deleteRows }) => {
-  const { currentItems, page, total, setPage } = usePagination<Student>(data);
+  const { currentItems, page, total, setPage } = usePagination<Student>(data, 5);
   const [isEditable, setIsEditable] = useToggle();
 
   const rows = currentItems.map(item => (

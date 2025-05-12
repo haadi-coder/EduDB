@@ -14,7 +14,7 @@ interface StaffTableProps {
 }
 
 const ParentsTable: FC<StaffTableProps> = ({ data, withDelete, deleteRows }) => {
-  const { currentItems, page, total, setPage } = usePagination<Parent>(data);
+  const { currentItems, page, total, setPage } = usePagination<Parent>(data, 5);
   const [isEditable, setIsEditable] = useToggle();
 
   const rows = currentItems.map(item => (
