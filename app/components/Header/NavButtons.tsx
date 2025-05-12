@@ -45,7 +45,7 @@ export const NavButtons: FC = () => {
                 : 'subtle'
             }
           >
-            Администрирование
+            Добавление данных
           </Button>
         </Menu.Target>
         <Menu.Dropdown>

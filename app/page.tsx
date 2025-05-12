@@ -1,5 +1,5 @@
 'use client';
-import { Box, Center, Flex, Loader, Pagination, Stack, Text } from '@mantine/core';
+import { Box, Center, Flex, Loader, Pagination, Stack, Text, Title } from '@mantine/core';
 import { IconFriends, IconSchool, IconUserFilled } from '@tabler/icons-react';
 import { useStatisticsQuery } from './hooks/useStatisticsQuery';
 import { StudentsCountByClasses } from './types/Statistics';
@@ -14,7 +14,9 @@ export default function Home() {
   );
 
   return (
-    <main className="pt-10 px-20">
+    <main className="pt-5 px-30">
+      <Title mb={20}>Статистика</Title>
+
       <Flex gap={20} justify="space-between">
         <Box className="flex items-center  bg-[#2e2e2e]  px-12 rounded-2xl h-[140px]">
           <Stack mr={90} gap={16}>
@@ -66,8 +68,8 @@ export default function Home() {
       </Flex>
 
       <Flex gap={20} mt={16}>
-        <Box className="py-5 px-10 bg-[#2e2e2e] w-full rounded-2xl h-full min-h-[400px]  flex flex-col justify-between">
-          <Stack gap={12} className="h-[65%] mt-4">
+        <Box className="py-3 px-10 bg-[#2e2e2e] w-full rounded-2xl h-full min-h-[100px]  flex flex-col justify-between">
+          <Stack gap={10} className="h-[65%] mt-4">
             <Text>Количество учеников в классе</Text>
             {isLoading ? (
               <Center h="20vh">
@@ -86,9 +88,9 @@ export default function Home() {
             )}
           </Stack>
 
-          <div className="h-[25%] flex justify-center mt-3">
+          <div className="h-[25%] flex justify-center mt-1">
             <Pagination
-              size="md"
+              size="sm"
               classNames={{ control: classes.paginationControls }}
               total={total}
               value={page}
