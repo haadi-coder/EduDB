@@ -41,7 +41,7 @@ const Students: FC = () => {
               value={selectedFilters.enrollmentYear}
               onChange={item => setSelectedFilters(prev => ({ ...prev, enrollmentYear: item }))}
             />
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Имя ученика"
               options={filterOptions.studentsFirstNameOptions}
@@ -52,7 +52,7 @@ const Students: FC = () => {
               onChange={async item => {
                 setSelectedFilters(prev => ({ ...prev, firstName: item }));
               }}
-            />
+            /> */}
             <SelectAsync
               className="w-full"
               placeholder="Фамилия ученика"
@@ -64,7 +64,7 @@ const Students: FC = () => {
               onChange={item => setSelectedFilters(prev => ({ ...prev, lastName: item }))}
             />
 
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Дата рождения"
               options={filterOptions.studentsBirthDateOptions}
@@ -73,7 +73,7 @@ const Students: FC = () => {
               }}
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
-            />
+            /> */}
           </div>
           <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />

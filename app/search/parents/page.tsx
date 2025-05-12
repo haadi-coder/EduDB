@@ -41,7 +41,7 @@ const Parents: FC = () => {
               value={selectedFilters.role}
               onChange={item => setSelectedFilters(prev => ({ ...prev, role: item }))}
             />
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Имя родителя"
               options={filterOptions.parentsFirstNameOptions}
@@ -52,7 +52,7 @@ const Parents: FC = () => {
               onChange={async item => {
                 setSelectedFilters(prev => ({ ...prev, firstName: item }));
               }}
-            />
+            /> */}
             <SelectAsync
               className="w-full"
               placeholder="Фамилия родителя"
@@ -64,7 +64,7 @@ const Parents: FC = () => {
               onChange={item => setSelectedFilters(prev => ({ ...prev, lastName: item }))}
             />
 
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Дата рождения"
               options={filterOptions.parentsBirthDateOptions}
@@ -73,7 +73,7 @@ const Parents: FC = () => {
               }}
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
-            />
+            /> */}
           </div>
           <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />

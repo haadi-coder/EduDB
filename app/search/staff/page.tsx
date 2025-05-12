@@ -41,7 +41,7 @@ const Staff: FC = () => {
               value={selectedFilters.position}
               onChange={item => setSelectedFilters(prev => ({ ...prev, position: item }))}
             />
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Имя работника"
               options={filterOptions.staffFirstNameOptions}
@@ -52,7 +52,7 @@ const Staff: FC = () => {
               onChange={async item => {
                 setSelectedFilters(prev => ({ ...prev, firstName: item }));
               }}
-            />
+            /> */}
             <SelectAsync
               className="w-full"
               placeholder="Фамилия работника"
@@ -64,7 +64,7 @@ const Staff: FC = () => {
               onChange={item => setSelectedFilters(prev => ({ ...prev, lastName: item }))}
             />
 
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Дата рождения"
               options={filterOptions.staffBirthDateOptions}
@@ -73,7 +73,7 @@ const Staff: FC = () => {
               }}
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
-            />
+            /> */}
           </div>
           <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />
