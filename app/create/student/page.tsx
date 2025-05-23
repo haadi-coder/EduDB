@@ -1,6 +1,6 @@
 'use client';
 import { SelectAsync } from '@/app/components/SelectAsync';
-import { Button, Flex, Grid, Group, NumberInput, TextInput, Title } from '@mantine/core';
+import { Button, Flex, Group, NumberInput, TextInput, Title } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import { IconPlus } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
@@ -22,6 +22,9 @@ const createStudent = async (data: StudentFormValues) => {
 const CreateStudent: FC = () => {
   const [selectedClass, setSelectedClass] = useState<Handbook | null>();
   const [selectedClassTeacher, setSelectedClassTeacher] = useState<Handbook | null>();
+
+  const [isStaffEditable, setIsStaffEditable] = useState(false);
+
   const form = useForm<StudentFormValues>({
     mode: 'controlled',
     initialValues: {
@@ -31,6 +34,11 @@ const CreateStudent: FC = () => {
       enrollmentYear: 2025,
       classId: null,
       classTeacherId: null,
+      classTeacher: {
+        firstName: '',
+        lastName: '',
+        isClassTeacher: true,
+      },
       parentId: null,
     },
     validate: {
@@ -53,71 +61,81 @@ const CreateStudent: FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <Title mt={40}>Добавление ученика</Title>
+      <Title mt={30}>Добавление ученика</Title>
       <form
         onSubmit={form.onSubmit(values => handleSubmit(values))}
-        className="h-[48vh] mt-12 mx-100 p-10  bg-[#24263a] rounded-lg"
+        className="mt-6 min-w-[420px] p-10 pt-8  pb-5  bg-[#24263a] rounded-lg"
       >
-        <Grid>
-          <Grid.Col span={6}>
-            <TextInput
-              className="w-full"
-              label="Фамилия"
-              placeholder="Введите фамилию..."
-              {...form.getInputProps('lastName')}
+        <div className="flex flex-col gap-5">
+          <TextInput
+            className="w-full"
+            label="Фамилия"
+            placeholder="Введите фамилию..."
+            {...form.getInputProps('lastName')}
+          />
+          <TextInput
+            className="w-full"
+            label="Имя"
+            placeholder="Введите имя..."
+            {...form.getInputProps('firstName')}
+          />
+          <TextInput
+            className="w-full "
+            label="Дата рождения"
+            placeholder="Введите дату рождения..."
+            {...form.getInputProps('birthDate')}
+          />
+          <div className="flex gap-5">
+            <NumberInput
+              className=" "
+              label="Год поступления"
+              placeholder="Введите год..."
+              {...form.getInputProps('enrollmentYear')}
             />
-            <TextInput
-              className="w-full mt-5"
-              label="Дата рождения"
-              placeholder="Введите дату рождения..."
-              {...form.getInputProps('birthDate')}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <TextInput
-              className="w-full"
-              label="Имя"
-              placeholder="Введите имя..."
-              {...form.getInputProps('firstName')}
-            />
-
-            <div className="flex gap-5">
-              <NumberInput
-                className="mt-5 "
-                label="Год поступления"
-                placeholder="Введите год..."
-                {...form.getInputProps('enrollmentYear')}
-              />
-              <SelectAsync
-                placeholder="класс"
-                className="mt-11 w-full flex-7/12"
-                options={classes.classesNames}
-                value={selectedClass || null}
-                onChange={payload => {
-                  setSelectedClass(payload);
-                  form.setFieldValue('classId', payload?.value || null);
-                }}
-              />
-            </div>
-          </Grid.Col>
-          <Grid.Col>
             <SelectAsync
-              placeholder="Классный руководитель"
-              className="mt-5"
-              options={classTeachers.staffClassTeacherOptions}
-              value={selectedClassTeacher || null}
+              placeholder="класс"
+              className="mt-6 w-full flex-7/12"
+              options={classes.classesNames}
+              value={selectedClass || null}
               onChange={payload => {
-                setSelectedClassTeacher(payload);
-                form.setFieldValue('classTeacherId', payload?.value || null);
+                setSelectedClass(payload);
+                form.setFieldValue('classId', payload?.value || null);
               }}
             />
-          </Grid.Col>
-        </Grid>
+          </div>
+          <div className="flex gap-4">
+            {isStaffEditable ? (
+              <TextInput
+                onChange={e => {
+                  const [lastName, firstName] = e.currentTarget.value.split(' ');
+                  form.setFieldValue('classTeacher.lastName', lastName);
+                  form.setFieldValue('classTeacher.firstName', firstName);
+                }}
+                className="flex-1"
+                placeholder="Введите персонал"
+              />
+            ) : (
+              <SelectAsync
+                className="flex-1"
+                placeholder="Персонал"
+                options={classTeachers.staffClassTeacherOptions}
+                value={selectedClassTeacher || null}
+                onChange={payload => {
+                  setSelectedClassTeacher(payload);
+                  form.setFieldValue('classTeacherId', payload?.value || null);
+                }}
+              />
+            )}
+            <Button color="#7c68ee" onClick={() => setIsStaffEditable(prev => !prev)}>
+              {!isStaffEditable ? 'Добавить' : 'Выбрать'}
+            </Button>
+          </div>
+        </div>
 
         <Flex justify="end">
           <Group className="mt-8">
             <Button disabled={!form.isValid()} color="#7c68ee" type="submit">
-              Добавить <IconPlus size={16} className="ml-3" />
+              Создать <IconPlus size={16} className="ml-3" />
             </Button>
           </Group>
         </Flex>

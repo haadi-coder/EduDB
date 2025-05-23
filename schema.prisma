@@ -41,8 +41,8 @@ model Staff {
   id String   @default(cuid())   @id
   firstName String
   lastName String
-  position String
-  birthDate  String
+  position String?
+  birthDate  String?
   isClassTeacher Boolean @default(false)
   students      Student[]
 }

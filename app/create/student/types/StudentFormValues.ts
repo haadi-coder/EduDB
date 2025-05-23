@@ -1,3 +1,5 @@
+import { Staff } from '@/app/search/staff/types/Staff';
+
 export interface StudentFormValues {
   firstName: string;
   lastName: string;
@@ -6,4 +8,5 @@ export interface StudentFormValues {
   parentId: string | null;
   classId: string | null;
   classTeacherId: string | null;
+  classTeacher: Omit<Staff, 'id' | 'birthDate' | 'position' | 'students'>;
 }

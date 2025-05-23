@@ -65,7 +65,15 @@ export const POST = async (request: NextRequest) => {
       enrollmentYear: requestData.enrollmentYear,
       // parent: { connect: { id: requestData.parentId } },
       scores: requestData.scores,
-      classTeacher: { connect: { id: requestData.classTeacherId } },
+      classTeacher: requestData.classTeacherId
+        ? { connect: { id: requestData.classTeacherId } }
+        : {
+            create: {
+              firstName: requestData.classTeacher.firstName,
+              lastName: requestData.classTeacher.lastName,
+              isClassTeacher: requestData.classTeacher.isClassTeacher,
+            },
+          },
       class: { connect: { id: requestData.classId } },
     },
   });
