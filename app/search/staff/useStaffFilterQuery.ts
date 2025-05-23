@@ -65,14 +65,14 @@ export const useStaffFilterQuery = (searchParams?: StaffFilterSearchParams) => {
   const staffBirthDateOptions: Handbook[] = data
     .map(staff => ({
       value: staff.id,
-      label: staff.birthDate,
+      label: staff.birthDate || '',
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
   const staffPositionOptions: Handbook[] = data
     .map(staff => ({
       value: staff.id,
-      label: staff.position,
+      label: staff.position || '',
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
