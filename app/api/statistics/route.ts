@@ -67,7 +67,7 @@ export const GET = async () => {
     };
 
     allStudents.forEach(student => {
-      const age = calculateAge(student.birthDate);
+      const age = calculateAge(student.birthDate || '');
 
       if (age >= 6 && age <= 9) {
         ageGroups['6-9']++;

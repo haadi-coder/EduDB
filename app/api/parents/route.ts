@@ -46,7 +46,6 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: NextRequest) => {
   const requestData = await request.json();
-  const childrenIds: string[] = requestData.childrenIds;
 
   const newParent = await prisma.parent.create({
     data: {
@@ -54,9 +53,18 @@ export const POST = async (request: NextRequest) => {
       lastName: requestData.lastName,
       birthDate: requestData.birthDate,
       role: requestData.role,
-      childrens: {
-        connect: childrenIds.map(child => ({ id: child })), // Если дети уже существуют в базе данных, мы можем использовать connect для связывания их с новым родителем.
-      },
+      childrens:
+        requestData.childrenIds.length !== 0
+          ? { connect: requestData.childrenIds }
+          : {
+              create: {
+                firstName: requestData.child.firstName,
+                lastName: requestData.child.lastName,
+                enrollmentYear: requestData.child.enrollmentYear,
+                birthDate: requestData.child.birthDate,
+              },
+            },
+
       phoneNumber: requestData.phoneNumber,
     },
   });

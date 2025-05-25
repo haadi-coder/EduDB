@@ -13,8 +13,8 @@ model Student{
   id String   @default(cuid())   @id
   firstName  String
   lastName String
-  birthDate String 
-  enrollmentYear Int
+  birthDate String? 
+  enrollmentYear Int?
 
   parent           Parent?        @relation(fields: [parentId], references: [id])
   parentId         String?

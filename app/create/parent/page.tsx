@@ -1,7 +1,7 @@
 'use client';
 
 import { Handbook } from '@/types/handbook';
-import { Button, Flex, Grid, Group, TextInput, Title } from '@mantine/core';
+import { Button, Flex, Group, TextInput, Title } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
 import { ParentFormValues } from './types/ParentFormValues';
@@ -22,6 +22,8 @@ const createParent = async (data: ParentFormValues) => {
 const CreateParent: FC = () => {
   const [selectedChildren, setSelectedChildren] = useState<Handbook[]>([]);
 
+  const [isChildrenEditable, setIsChildrenEditable] = useState(false);
+
   const form = useForm<ParentFormValues>({
     mode: 'controlled',
     initialValues: {
@@ -29,6 +31,12 @@ const CreateParent: FC = () => {
       lastName: '',
       birthDate: '',
       childrenIds: [],
+      child: {
+        firstName: '',
+        lastName: '',
+        birthDate: new Date().toLocaleDateString('ru'),
+        enrollmentYear: new Date().getFullYear(),
+      },
       phoneNumber: '',
       role: '',
     },
@@ -54,62 +62,80 @@ const CreateParent: FC = () => {
       <Title mt={40}>Добавление родителя</Title>
       <form
         onSubmit={form.onSubmit(values => handleSubmit(values))}
-        className="h-[52vh] w-[45%] mt-10 p-10  bg-[#24263a] rounded-lg"
+        className=" min-w-[420px] mt-5 p-10 pt-8 pb-6  bg-[#24263a] rounded-lg"
       >
-        <Grid>
-          <Grid.Col span={6}>
+        <div className="flex flex-col gap-5">
+          <TextInput
+            className="w-full"
+            label="Фамилия"
+            placeholder="Введите фамилию..."
+            {...form.getInputProps('lastName')}
+          />
+          <TextInput
+            className="w-full"
+            label="Имя"
+            placeholder="Введите имя..."
+            {...form.getInputProps('firstName')}
+          />
+          <div className="flex gap-5">
             <TextInput
               className="w-full"
-              label="Фамилия"
-              placeholder="Введите фамилию..."
-              {...form.getInputProps('lastName')}
-            />
-            <TextInput
-              className="w-full mt-5"
               label="Дата рождения"
               placeholder="Введите дату рождения..."
               {...form.getInputProps('birthDate')}
             />
             <TextInput
-              className="w-full mt-5"
+              className="w-full"
               label="Роль"
               placeholder="Введите роль..."
               {...form.getInputProps('role')}
             />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <TextInput
-              className="w-full"
-              label="Имя"
-              placeholder="Введите имя..."
-              {...form.getInputProps('firstName')}
-            />
-            <TextInput
-              className="w-full mt-5"
-              label="Номер телефона"
-              placeholder="Введите номер..."
-              {...form.getInputProps('phoneNumber')}
-            />
-            <MultiSelectAsync
-              placeholder="Ребенок"
-              className="mt-11"
-              options={children.studentsOptions}
-              value={selectedChildren}
-              onChange={payload => {
-                setSelectedChildren(payload);
-                form.setFieldValue(
-                  'childrenIds',
-                  payload.map(item => item.value),
-                );
-              }}
-            />
-          </Grid.Col>
-        </Grid>
+          </div>
+
+          <TextInput
+            className="w-full"
+            label="Номер телефона"
+            placeholder="Введите номер..."
+            {...form.getInputProps('phoneNumber')}
+          />
+          <div className="flex gap-5">
+            {isChildrenEditable ? (
+              <TextInput
+                onChange={e => {
+                  const [lastName, firstName] = e.currentTarget.value.split(' ');
+                  console.log(lastName, firstName);
+                  form.setFieldValue('child.lastName', lastName ?? '');
+                  form.setFieldValue('child.firstName', firstName ?? '');
+                }}
+                className="flex-1"
+                placeholder="Введите фамилию и имя ребенка"
+              />
+            ) : (
+              <MultiSelectAsync
+                className="flex-1"
+                placeholder="Ребенок"
+                options={children.studentsOptions}
+                value={selectedChildren}
+                onChange={payload => {
+                  setSelectedChildren(payload);
+                  form.setFieldValue(
+                    'childrenIds',
+                    payload.map(item => ({ id: item.value })),
+                  );
+                }}
+              />
+            )}
+
+            <Button onClick={() => setIsChildrenEditable(prev => !prev)} color="#7c68ee">
+              {isChildrenEditable ? 'Выбрать' : 'Добавить'}
+            </Button>
+          </div>
+        </div>
 
         <Flex justify="end">
           <Group className="mt-8">
             <Button disabled={!form.isValid()} color="#7c68ee" type="submit">
-              Добавить <IconPlus size={16} className="ml-3" />
+              Создать <IconPlus size={16} className="ml-3" />
             </Button>
           </Group>
         </Flex>
