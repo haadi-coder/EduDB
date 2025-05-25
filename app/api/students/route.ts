@@ -63,7 +63,14 @@ export const POST = async (request: NextRequest) => {
       lastName: requestData.lastName,
       birthDate: requestData.birthDate,
       enrollmentYear: requestData.enrollmentYear,
-      // parent: { connect: { id: requestData.parentId } },
+      parent: requestData.parentId
+        ? { connect: { id: requestData.parentId } }
+        : {
+            create: {
+              lastName: requestData.lastName,
+              firstName: requestData.firstName,
+            },
+          },
       scores: requestData.scores,
       classTeacher: requestData.classTeacherId
         ? { connect: { id: requestData.classTeacherId } }

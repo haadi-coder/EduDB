@@ -9,6 +9,7 @@ import { Handbook } from '@/types/handbook';
 import { useClassesFilterQuery } from '@/app/search/classes/useClassesFilterQuery';
 import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
 import axios from 'axios';
+import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
 
 const createStudent = async (data: StudentFormValues) => {
   const response = await axios.post(`/api/students`, data, {
@@ -22,8 +23,10 @@ const createStudent = async (data: StudentFormValues) => {
 const CreateStudent: FC = () => {
   const [selectedClass, setSelectedClass] = useState<Handbook | null>();
   const [selectedClassTeacher, setSelectedClassTeacher] = useState<Handbook | null>();
+  const [selectedParent, setSelectedParent] = useState<Handbook | null>();
 
   const [isStaffEditable, setIsStaffEditable] = useState(false);
+  const [isParentEditable, setIsParentEditable] = useState(false);
 
   const form = useForm<StudentFormValues>({
     mode: 'controlled',
@@ -40,6 +43,10 @@ const CreateStudent: FC = () => {
         isClassTeacher: true,
       },
       parentId: null,
+      parent: {
+        firstName: '',
+        lastName: '',
+      },
     },
     validate: {
       firstName: isNotEmpty(),
@@ -51,6 +58,7 @@ const CreateStudent: FC = () => {
 
   const { filterOptions: classes } = useClassesFilterQuery();
   const { filterOptions: classTeachers } = useStaffFilterQuery();
+  const { filterOptions: parents } = useParentFilterQuery();
 
   const handleSubmit = (formValues: StudentFormValues) => {
     createStudent(formValues);
@@ -73,18 +81,21 @@ const CreateStudent: FC = () => {
             placeholder="Введите фамилию..."
             {...form.getInputProps('lastName')}
           />
-          <TextInput
-            className="w-full"
-            label="Имя"
-            placeholder="Введите имя..."
-            {...form.getInputProps('firstName')}
-          />
-          <TextInput
-            className="w-full "
-            label="Дата рождения"
-            placeholder="Введите дату рождения..."
-            {...form.getInputProps('birthDate')}
-          />
+          <div className="flex gap-5">
+            <TextInput
+              className="w-full flex-7/12"
+              label="Имя"
+              placeholder="Введите имя..."
+              {...form.getInputProps('firstName')}
+            />
+            <TextInput
+              className="w-full flex-5/12"
+              label="Дата рождения"
+              placeholder="Введите дату..."
+              {...form.getInputProps('birthDate')}
+            />
+          </div>
+
           <div className="flex gap-5">
             <NumberInput
               className=" "
@@ -128,6 +139,34 @@ const CreateStudent: FC = () => {
             )}
             <Button color="#7c68ee" onClick={() => setIsStaffEditable(prev => !prev)}>
               {!isStaffEditable ? 'Добавить' : 'Выбрать'}
+            </Button>
+          </div>
+
+          <div className="flex gap-4">
+            {isParentEditable ? (
+              <TextInput
+                onChange={e => {
+                  const [lastName, firstName] = e.currentTarget.value.split(' ');
+                  form.setFieldValue('parent.lastName', lastName);
+                  form.setFieldValue('parent.firstName', firstName);
+                }}
+                className="flex-1"
+                placeholder="Введите фамилию и имя родителя"
+              />
+            ) : (
+              <SelectAsync
+                className="flex-1"
+                placeholder="Родитель"
+                options={parents.parentsOptions}
+                value={selectedParent || null}
+                onChange={payload => {
+                  setSelectedParent(payload);
+                  form.setFieldValue('parentId', payload?.value || null);
+                }}
+              />
+            )}
+            <Button color="#7c68ee" onClick={() => setIsParentEditable(prev => !prev)}>
+              {!isParentEditable ? 'Добавить' : 'Выбрать'}
             </Button>
           </div>
         </div>

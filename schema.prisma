@@ -59,8 +59,8 @@ model Parent {
   id String   @default(cuid())   @id
   firstName String
   lastName String
-  role String
-  phoneNumber String
+  role String?
+  phoneNumber String?
   birthDate  String?
   childrens Student[]
 }
