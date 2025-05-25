@@ -1,7 +1,7 @@
 'use client';
 
 import { Handbook } from '@/types/handbook';
-import { Button, Flex, Grid, Group, Stack, Switch, Text, TextInput, Title } from '@mantine/core';
+import { Button, Flex, Group, Stack, Switch, Text, TextInput, Title } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
 import { IconPlus } from '@tabler/icons-react';
@@ -53,53 +53,40 @@ const CreateStaff: FC = () => {
       <Title mt={40}>Добавление сотрудника</Title>
       <form
         onSubmit={form.onSubmit(values => handleSubmit(values))}
-        className="h-[52vh] w-[45%] mt-10 p-10  bg-[#24263a] rounded-lg"
+        className=" min-w-[500px] mt-5 p-10 pt-8 pb-6 bg-[#24263a] rounded-lg"
       >
-        <Grid>
-          <Grid.Col span={6}>
+        <div className="flex flex-col gap-5">
+          <TextInput
+            className="w-full"
+            label="Фамилия"
+            placeholder="Введите фамилию..."
+            {...form.getInputProps('lastName')}
+          />
+
+          <TextInput
+            className="w-full"
+            label="Имя"
+            placeholder="Введите имя..."
+            {...form.getInputProps('firstName')}
+          />
+
+          <TextInput
+            className="w-full"
+            label="Дата рождения"
+            placeholder="Введите дату рождения..."
+            {...form.getInputProps('birthDate')}
+          />
+
+          <div className="flex gap-5">
             <TextInput
               className="w-full"
-              label="Фамилия"
-              placeholder="Введите фамилию..."
-              {...form.getInputProps('lastName')}
-            />
-            <TextInput
-              className="w-full mt-5"
-              label="Дата рождения"
-              placeholder="Введите дату рождения..."
-              {...form.getInputProps('birthDate')}
-            />
-            <TextInput
-              className="w-full mt-5"
               label="Роль"
               placeholder="Введите роль..."
               {...form.getInputProps('position')}
             />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <TextInput
-              className="w-full"
-              label="Имя"
-              placeholder="Введите имя..."
-              {...form.getInputProps('firstName')}
-            />
 
-            <MultiSelectAsync
-              disabled={!form.values.isClassTeacher}
-              placeholder="Ученики"
-              className="mt-11 text-white"
-              options={children.studentsOptions}
-              value={selectedStudents}
-              onChange={payload => {
-                setSelectedStudents(payload);
-                form.setFieldValue(
-                  'studentIds',
-                  payload.map(item => item.value),
-                );
-              }}
-            />
-            <Stack className="mt-7" gap={8}>
-              <Text size="14px">Классный руководитель</Text>
+            <Stack className="flex-6/12" gap={8}>
+              <Text size="14px">Клас. руководитель</Text>
               <Switch
                 className="w-full mt-2"
                 size="md"
@@ -108,8 +95,23 @@ const CreateStaff: FC = () => {
                 {...form.getInputProps('isClassTeacher')}
               />
             </Stack>
-          </Grid.Col>
-        </Grid>
+          </div>
+
+          <MultiSelectAsync
+            disabled={!form.values.isClassTeacher}
+            placeholder="Ученики"
+            className=" text-white"
+            options={children.studentsOptions}
+            value={selectedStudents}
+            onChange={payload => {
+              setSelectedStudents(payload);
+              form.setFieldValue(
+                'studentIds',
+                payload.map(item => item.value),
+              );
+            }}
+          />
+        </div>
 
         <Flex justify="end">
           <Group className="mt-8">
