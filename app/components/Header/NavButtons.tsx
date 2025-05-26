@@ -23,7 +23,7 @@ export const NavButtons: FC = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item component={Link} href="/search/students">
+          {/* <Menu.Item component={Link} href="/search/students">
             Ученики
           </Menu.Item>
           <Menu.Item component={Link} href="/search/staff">
@@ -31,6 +31,13 @@ export const NavButtons: FC = () => {
           </Menu.Item>
           <Menu.Item component={Link} href="/search/parents">
             Родители
+          </Menu.Item> */}
+
+          <Menu.Item component={Link} href="/search/students">
+            Поиск по одному атрибуту
+          </Menu.Item>
+          <Menu.Item component={Link} href="/search/parents">
+            Поиск по двум атрибутам
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

@@ -59,12 +59,12 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
       }}
     >
       <Combobox.Target>
-        <div className="mt-2">
+        <div className={className}>
           <Text size="14px">{label}</Text>
           <TextInput
-            mt={2}
+            mt={5}
             {...rest}
-            className={` ${className}`}
+            className={className}
             classNames={{ input: classes.selectInput }}
             component="button"
             type="button"

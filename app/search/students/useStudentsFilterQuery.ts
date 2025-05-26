@@ -8,6 +8,7 @@ export interface StudentFilterSearchParams {
   lastName: Handbook | null;
   birthDate: Handbook | null;
   enrollmentYear: Handbook | null;
+  parentId: Handbook | null;
 }
 
 export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams) => {
@@ -18,6 +19,7 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
       searchParams?.birthDate,
       searchParams?.firstName,
       searchParams?.enrollmentYear,
+      searchParams?.parentId,
     ],
     queryFn: async (): Promise<Student[]> => {
       const response = await axios.get<unknown, AxiosResponse<Student[]>>(`/api/students`, {
@@ -26,6 +28,7 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
           ln: searchParams?.lastName?.label,
           bd: searchParams?.birthDate?.label,
           ey: searchParams?.enrollmentYear?.label,
+          pi: searchParams?.parentId?.value,
         },
       });
 
@@ -43,6 +46,7 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
         studentsFirstNameOptions: [],
         studentsLastNameOptions: [],
         studentsOptions: [],
+        studentParentOptions: [],
       },
       ...rest,
     };
@@ -83,12 +87,20 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
+  const studentParentOptions: Handbook[] = data
+    .map(student => ({
+      value: student.parent?.id || '',
+      label: `${student.parent?.lastName} ${student.parent?.firstName}`,
+    }))
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+
   const studentFilterOptions = {
     studentsFirstNameOptions,
     studentsLastNameOptions,
     studentsEnrollmentYearOptions,
     studentsBirthDateOptions,
     studentsOptions,
+    studentParentOptions,
   };
 
   return { data: data, filterOptions: studentFilterOptions, ...rest };

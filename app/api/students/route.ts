@@ -10,6 +10,7 @@ export const GET = async (request: NextRequest) => {
   const lastName = searchParams.get('ln');
   const birthDate = searchParams.get('bd');
   const enrollmentYear = searchParams.get('ey');
+  const parentId = searchParams.get('pi');
 
   const where: Prisma.StudentWhereInput = {};
 
@@ -34,6 +35,10 @@ export const GET = async (request: NextRequest) => {
 
   if (enrollmentYear) {
     where.enrollmentYear = parseInt(enrollmentYear);
+  }
+
+  if (parentId) {
+    where.parentId = parentId;
   }
 
   const students = await prisma.student.findMany({

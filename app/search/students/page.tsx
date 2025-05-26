@@ -13,6 +13,7 @@ interface SelectedFilters {
   lastName: Handbook | null;
   birthDate: Handbook | null;
   enrollmentYear: Handbook | null;
+  parentId: Handbook | null;
 }
 
 const Students: FC = () => {
@@ -21,6 +22,7 @@ const Students: FC = () => {
     lastName: null,
     birthDate: null,
     enrollmentYear: null,
+    parentId: null,
   });
 
   const { data, refetch, filterOptions, isLoading } = useStudentsFilterQuery(selectedFilters);
@@ -32,7 +34,7 @@ const Students: FC = () => {
         <Title mb={30}>Поиск ученика </Title>
         <div className="flex gap-6">
           <div className="flex w-full gap-3">
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Год поступления"
               options={filterOptions.studentsEnrollmentYearOptions}
@@ -41,7 +43,7 @@ const Students: FC = () => {
               }}
               value={selectedFilters.enrollmentYear}
               onChange={item => setSelectedFilters(prev => ({ ...prev, enrollmentYear: item }))}
-            />
+            /> */}
             {/* <SelectAsync
               className="w-full"
               placeholder="Имя ученика"
@@ -54,7 +56,7 @@ const Students: FC = () => {
                 setSelectedFilters(prev => ({ ...prev, firstName: item }));
               }}
             /> */}
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Фамилия ученика"
               options={filterOptions.studentsLastNameOptions}
@@ -63,7 +65,7 @@ const Students: FC = () => {
               }}
               value={selectedFilters.lastName}
               onChange={item => setSelectedFilters(prev => ({ ...prev, lastName: item }))}
-            />
+            /> */}
 
             {/* <SelectAsync
               className="w-full"
@@ -75,8 +77,20 @@ const Students: FC = () => {
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
             /> */}
+
+            <SelectAsync
+              className="w-full"
+              label="Родитель"
+              placeholder="Выберите родителя..."
+              options={filterOptions.studentParentOptions}
+              fetchOptions={async () => {
+                setSelectedFilters(prev => ({ ...prev, parentId: null }));
+              }}
+              value={selectedFilters.parentId}
+              onChange={item => setSelectedFilters(prev => ({ ...prev, parentId: item }))}
+            />
           </div>
-          <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
+          <ActionIcon mt={16} onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />
           </ActionIcon>
         </div>

@@ -34,7 +34,8 @@ const Parents: FC = () => {
           <div className="flex w-full gap-3">
             <SelectAsync
               className="w-full"
-              placeholder="Роль в семье"
+              label="Роль"
+              placeholder="Выберите роль в семье..."
               options={filterOptions.parentsRoleOptions}
               fetchOptions={async () => {
                 setSelectedFilters(prev => ({ ...prev, role: null }));
@@ -54,7 +55,7 @@ const Parents: FC = () => {
                 setSelectedFilters(prev => ({ ...prev, firstName: item }));
               }}
             /> */}
-            <SelectAsync
+            {/* <SelectAsync
               className="w-full"
               placeholder="Фамилия родителя"
               options={filterOptions.parentsLastNameOptions}
@@ -63,20 +64,21 @@ const Parents: FC = () => {
               }}
               value={selectedFilters.lastName}
               onChange={item => setSelectedFilters(prev => ({ ...prev, lastName: item }))}
-            />
+            /> */}
 
-            {/* <SelectAsync
+            <SelectAsync
               className="w-full"
-              placeholder="Дата рождения"
+              label="Дата рождения"
+              placeholder="Выберите дату рождения..."
               options={filterOptions.parentsBirthDateOptions}
               fetchOptions={async () => {
                 setSelectedFilters(prev => ({ ...prev, birthDate: null }));
               }}
               value={selectedFilters.birthDate}
               onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
-            /> */}
+            />
           </div>
-          <ActionIcon onClick={() => refetch()} size={36} color="#7c68ee">
+          <ActionIcon mt={18} onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />
           </ActionIcon>
         </div>
