@@ -57,6 +57,7 @@ const Parents: FC = () => {
             /> */}
             <SelectAsync
               className="w-full"
+              label="Фамилия"
               placeholder="Фамилия родителя"
               options={filterOptions.parentsLastNameOptions}
               fetchOptions={async () => {
