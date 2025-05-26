@@ -10,6 +10,8 @@ import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQ
 import axios from 'axios';
 import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
 import { notifications } from '@mantine/notifications';
+import { SelectAsync } from '@/app/components/SelectAsync';
+import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
 
 const createParent = async (data: ParentFormValues) => {
   const response = await axios.post(`/api/parents`, data, {
@@ -22,6 +24,7 @@ const createParent = async (data: ParentFormValues) => {
 
 const CreateParent: FC = () => {
   const [selectedChildren, setSelectedChildren] = useState<Handbook[]>([]);
+  const [selectedRole, setSelectedRole] = useState<Handbook | null>(null);
 
   const [isChildrenEditable, setIsChildrenEditable] = useState(false);
 
@@ -51,6 +54,7 @@ const CreateParent: FC = () => {
   });
 
   const { filterOptions: children } = useStudentsFilterQuery();
+  const { filterOptions: parents } = useParentFilterQuery();
 
   const handleSubmit = async (formValues: ParentFormValues) => {
     try {
@@ -59,6 +63,7 @@ const CreateParent: FC = () => {
       if (status === 201 || status === 200) {
         form.reset();
         setSelectedChildren([]);
+        setSelectedRole(null);
         setIsChildrenEditable(false);
 
         notifications.show({
@@ -103,11 +108,16 @@ const CreateParent: FC = () => {
               placeholder="дд.мм.гггг"
               {...form.getInputProps('birthDate')}
             />
-            <TextInput
-              className="w-full"
+            <SelectAsync
+              className="w-40"
               label="Роль"
+              options={parents.parentsRoleOptions}
+              value={selectedRole}
               placeholder="Введите роль..."
-              {...form.getInputProps('role')}
+              onChange={value => {
+                setSelectedRole(value);
+                form.setFieldValue('role', value?.label || '');
+              }}
             />
           </div>
 

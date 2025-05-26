@@ -1,11 +1,20 @@
 'use client';
 import { Handbook } from '@/types/handbook';
-import { CheckIcon, Combobox, Loader, ScrollArea, TextInput, useCombobox } from '@mantine/core';
+import {
+  CheckIcon,
+  Combobox,
+  Loader,
+  ScrollArea,
+  Text,
+  TextInput,
+  useCombobox,
+} from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
 import classes from './SelectAsync.module.css';
 
 interface SelectAsyncProps {
+  label?: string;
   placeholder?: string;
   fetchOptions?: () => void;
   fetchData?: () => void;
@@ -17,6 +26,7 @@ interface SelectAsyncProps {
 
 export const SelectAsync: FC<SelectAsyncProps> = ({
   className,
+  label,
   placeholder,
   fetchOptions,
   fetchData,
@@ -49,31 +59,35 @@ export const SelectAsync: FC<SelectAsyncProps> = ({
       }}
     >
       <Combobox.Target>
-        <TextInput
-          {...rest}
-          className={` ${className}`}
-          classNames={{ input: classes.selectInput }}
-          component="button"
-          type="button"
-          pointer
-          onClick={() => combobox.toggleDropdown()}
-          rightSectionPointerEvents="none"
-          rightSection={
-            loading ? (
-              <Loader color="#7c68ee" size={18} />
-            ) : combobox.dropdownOpened ? (
-              <IconChevronUp size={'18px'} />
+        <div className="mt-2">
+          <Text size="14px">{label}</Text>
+          <TextInput
+            mt={2}
+            {...rest}
+            className={` ${className}`}
+            classNames={{ input: classes.selectInput }}
+            component="button"
+            type="button"
+            pointer
+            onClick={() => combobox.toggleDropdown()}
+            rightSectionPointerEvents="none"
+            rightSection={
+              loading ? (
+                <Loader color="#7c68ee" size={18} />
+              ) : combobox.dropdownOpened ? (
+                <IconChevronUp size={'18px'} />
+              ) : (
+                <IconChevronDown size={18} />
+              )
+            }
+          >
+            {!!value?.label ? (
+              <span>{value?.label}</span>
             ) : (
-              <IconChevronDown size={18} />
-            )
-          }
-        >
-          {!!value?.label ? (
-            <span>{value?.label}</span>
-          ) : (
-            <span className="text-gray-400">{placeholder}</span>
-          )}
-        </TextInput>
+              <span className="text-gray-400">{placeholder}</span>
+            )}
+          </TextInput>
+        </div>
       </Combobox.Target>
 
       <Combobox.Dropdown classNames={{ dropdown: classes.selectDropdown }}>
