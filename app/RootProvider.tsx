@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import { useState } from 'react';
+import { Notifications } from '@mantine/notifications';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -43,6 +44,7 @@ export const RootProvider = ({ children }) => {
         }}
       >
         <QueryClientProvider client={client}>
+          <Notifications />
           <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
         </QueryClientProvider>
       </MantineProvider>

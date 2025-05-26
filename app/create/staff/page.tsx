@@ -9,6 +9,7 @@ import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQ
 import axios from 'axios';
 import { StaffFormValues } from './types/StaffFormValues';
 import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
+import { notifications } from '@mantine/notifications';
 
 const createStaff = async (data: StaffFormValues) => {
   const response = await axios.post(`/api/staff`, data, {
@@ -42,15 +43,32 @@ const CreateStaff: FC = () => {
 
   const { filterOptions: children } = useStudentsFilterQuery();
 
-  const handleSubmit = (formValues: StaffFormValues) => {
-    createStaff(formValues);
-    form.reset();
-    setSelectedStudents([]);
+  const handleSubmit = async (formValues: StaffFormValues) => {
+    try {
+      const { status } = await createStaff(formValues);
+
+      if (status === 201 || status === 200) {
+        form.reset();
+        setSelectedStudents([]);
+
+        notifications.show({
+          title: 'Успешно',
+          message: 'Добавление персонала прошло успешно',
+          color: 'green',
+        });
+      }
+    } catch {
+      notifications.show({
+        title: 'Ошибка',
+        message: 'Что-тоо пошло не так. Заполните все необходимые поля',
+        color: 'red',
+      });
+    }
   };
 
   return (
     <div className="flex flex-col items-center">
-      <Title mt={40}>Добавление сотрудника</Title>
+      <Title mt={40}>Добавление персонала</Title>
       <form
         onSubmit={form.onSubmit(values => handleSubmit(values))}
         className=" min-w-[500px] mt-5 p-10 pt-8 pb-6 bg-[#24263a] rounded-lg"
@@ -73,7 +91,7 @@ const CreateStaff: FC = () => {
           <TextInput
             className="w-full"
             label="Дата рождения"
-            placeholder="Введите дату рождения..."
+            placeholder="дд.мм.гггг"
             {...form.getInputProps('birthDate')}
           />
 

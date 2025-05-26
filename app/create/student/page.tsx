@@ -10,6 +10,7 @@ import { useClassesFilterQuery } from '@/app/search/classes/useClassesFilterQuer
 import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
 import axios from 'axios';
 import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
+import { notifications } from '@mantine/notifications';
 
 const createStudent = async (data: StudentFormValues) => {
   const response = await axios.post(`/api/students`, data, {
@@ -17,6 +18,7 @@ const createStudent = async (data: StudentFormValues) => {
       'Content-Type': 'application/json',
     },
   });
+
   return { status: response.status, data: response.data };
 };
 
@@ -60,11 +62,28 @@ const CreateStudent: FC = () => {
   const { filterOptions: classTeachers } = useStaffFilterQuery();
   const { filterOptions: parents } = useParentFilterQuery();
 
-  const handleSubmit = (formValues: StudentFormValues) => {
-    createStudent(formValues);
-    form.reset();
-    setSelectedClass(null);
-    setSelectedClassTeacher(null);
+  const handleSubmit = async (formValues: StudentFormValues) => {
+    try {
+      const { status } = await createStudent(formValues);
+      if (status === 201 || status === 200) {
+        form.reset();
+        setSelectedClass(null);
+        setSelectedClassTeacher(null);
+        setSelectedParent(null);
+
+        notifications.show({
+          title: 'Успешно',
+          message: 'Добавление ученика прошло успешно',
+          color: 'green',
+        });
+      }
+    } catch {
+      notifications.show({
+        title: 'Ошибка',
+        message: 'Что-тоо пошло не так. Заполните все необходимые поля',
+        color: 'red',
+      });
+    }
   };
 
   return (
@@ -91,7 +110,7 @@ const CreateStudent: FC = () => {
             <TextInput
               className="w-full flex-5/12"
               label="Дата рождения"
-              placeholder="Введите дату..."
+              placeholder="дд.мм.гггг"
               {...form.getInputProps('birthDate')}
             />
           </div>

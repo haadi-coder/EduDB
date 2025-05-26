@@ -9,6 +9,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQuery';
 import axios from 'axios';
 import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
+import { notifications } from '@mantine/notifications';
 
 const createParent = async (data: ParentFormValues) => {
   const response = await axios.post(`/api/parents`, data, {
@@ -51,10 +52,28 @@ const CreateParent: FC = () => {
 
   const { filterOptions: children } = useStudentsFilterQuery();
 
-  const handleSubmit = (formValues: ParentFormValues) => {
-    createParent(formValues);
-    form.reset();
-    setSelectedChildren([]);
+  const handleSubmit = async (formValues: ParentFormValues) => {
+    try {
+      const { status } = await createParent(formValues);
+
+      if (status === 201 || status === 200) {
+        form.reset();
+        setSelectedChildren([]);
+        setIsChildrenEditable(false);
+
+        notifications.show({
+          title: 'Успешно',
+          message: 'Добавление родителя прошло успешно',
+          color: 'green',
+        });
+      }
+    } catch {
+      notifications.show({
+        title: 'Ошибка',
+        message: 'Что-тоо пошло не так. Заполните все необходимые поля',
+        color: 'red',
+      });
+    }
   };
 
   return (
@@ -81,7 +100,7 @@ const CreateParent: FC = () => {
             <TextInput
               className="w-full"
               label="Дата рождения"
-              placeholder="Введите дату рождения..."
+              placeholder="дд.мм.гггг"
               {...form.getInputProps('birthDate')}
             />
             <TextInput
