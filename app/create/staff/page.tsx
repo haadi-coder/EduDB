@@ -10,6 +10,8 @@ import axios from 'axios';
 import { StaffFormValues } from './types/StaffFormValues';
 import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
 import { notifications } from '@mantine/notifications';
+import { SelectAsync } from '@/app/components/SelectAsync';
+import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
 
 const createStaff = async (data: StaffFormValues) => {
   const response = await axios.post(`/api/staff`, data, {
@@ -22,6 +24,8 @@ const createStaff = async (data: StaffFormValues) => {
 
 const CreateStaff: FC = () => {
   const [selectedStudents, setSelectedStudents] = useState<Handbook[]>([]);
+  const [selectedPosition, setSelectedPosition] = useState<Handbook | null>(null);
+  const [isPositionEditable, setIsPositionEditable] = useState(false);
 
   const form = useForm<StaffFormValues>({
     mode: 'controlled',
@@ -42,6 +46,7 @@ const CreateStaff: FC = () => {
   });
 
   const { filterOptions: children } = useStudentsFilterQuery();
+  const { filterOptions: staff } = useStaffFilterQuery();
 
   const handleSubmit = async (formValues: StaffFormValues) => {
     try {
@@ -96,13 +101,54 @@ const CreateStaff: FC = () => {
           />
 
           <div className="flex gap-5">
-            <TextInput
-              className="w-full"
-              label="Роль"
-              placeholder="Введите роль..."
-              {...form.getInputProps('position')}
-            />
+            {isPositionEditable ? (
+              <TextInput
+                mt={-6}
+                className="w-full"
+                label="Роль"
+                placeholder="Введите роль..."
+                {...form.getInputProps('position')}
+              />
+            ) : (
+              <SelectAsync
+                label="Роль"
+                placeholder="Выберите роль"
+                className="w-full"
+                options={staff.staffPositionOptions}
+                value={selectedPosition}
+                onChange={value => {
+                  setSelectedPosition(value);
+                  form.setFieldValue('position', value?.label || '');
+                }}
+              />
+            )}
 
+            <Button
+              mt={18}
+              color="#7c68ee"
+              className="flex-4/12"
+              onClick={() => setIsPositionEditable(prev => !prev)}
+            >
+              {isPositionEditable ? 'Выбрать' : 'Добавить'}
+            </Button>
+          </div>
+
+          <div className="flex gap-5">
+            <MultiSelectAsync
+              label="Ученики"
+              disabled={!form.values.isClassTeacher}
+              placeholder="Ученики"
+              className="text-white w-full"
+              options={children.studentsOptions}
+              value={selectedStudents}
+              onChange={payload => {
+                setSelectedStudents(payload);
+                form.setFieldValue(
+                  'studentIds',
+                  payload.map(item => item.value),
+                );
+              }}
+            />
             <Stack className="flex-6/12" gap={8}>
               <Text size="14px">Клас. руководитель</Text>
               <Switch
@@ -114,27 +160,12 @@ const CreateStaff: FC = () => {
               />
             </Stack>
           </div>
-
-          <MultiSelectAsync
-            disabled={!form.values.isClassTeacher}
-            placeholder="Ученики"
-            className=" text-white"
-            options={children.studentsOptions}
-            value={selectedStudents}
-            onChange={payload => {
-              setSelectedStudents(payload);
-              form.setFieldValue(
-                'studentIds',
-                payload.map(item => item.value),
-              );
-            }}
-          />
         </div>
 
         <Flex justify="end">
           <Group className="mt-8">
             <Button disabled={!form.isValid()} color="#7c68ee" type="submit">
-              Добавить <IconPlus size={16} className="ml-3" />
+              Создать <IconPlus size={16} className="ml-3" />
             </Button>
           </Group>
         </Flex>

@@ -1,12 +1,21 @@
 'use client';
 import { Handbook } from '@/types/handbook';
-import { CheckIcon, Combobox, Loader, ScrollArea, TextInput, useCombobox } from '@mantine/core';
+import {
+  CheckIcon,
+  Combobox,
+  Loader,
+  ScrollArea,
+  Text,
+  TextInput,
+  useCombobox,
+} from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import React, { FC, useState } from 'react';
 import classes from '../components/SelectAsync/SelectAsync.module.css';
 
 interface MultiSelectAsyncProps {
   disabled?: boolean;
+  label?: string;
   placeholder?: string;
   fetchOptions?: () => void;
   fetchData?: () => void;
@@ -20,6 +29,7 @@ export const MultiSelectAsync: FC<MultiSelectAsyncProps> = ({
   className,
   disabled = false,
   placeholder,
+  label,
   fetchOptions,
   fetchData,
   options,
@@ -56,27 +66,31 @@ export const MultiSelectAsync: FC<MultiSelectAsyncProps> = ({
   return (
     <Combobox store={combobox} withinPortal={false} onOptionSubmit={handleOptionSelect}>
       <Combobox.Target>
-        <TextInput
-          {...rest}
-          disabled={disabled}
-          className={`${className}`}
-          component="button"
-          type="button"
-          pointer
-          onClick={() => combobox.toggleDropdown()}
-          rightSectionPointerEvents="none"
-          rightSection={
-            loading ? (
-              <Loader color="#7c68ee" size={18} />
-            ) : combobox.dropdownOpened ? (
-              <IconChevronUp size={'18px'} />
-            ) : (
-              <IconChevronDown size={18} />
-            )
-          }
-        >
-          <span className={value.length ? 'text-[#c9c9c9]' : 'text-gray-400'}>{displayValue}</span>
-        </TextInput>
+        <div className={className}>
+          <Text fz={14}>{label}</Text>
+          <TextInput
+            {...rest}
+            disabled={disabled}
+            component="button"
+            type="button"
+            pointer
+            onClick={() => combobox.toggleDropdown()}
+            rightSectionPointerEvents="none"
+            rightSection={
+              loading ? (
+                <Loader color="#7c68ee" size={18} />
+              ) : combobox.dropdownOpened ? (
+                <IconChevronUp size={'18px'} />
+              ) : (
+                <IconChevronDown size={18} />
+              )
+            }
+          >
+            <span className={value.length ? 'text-[#c9c9c9]' : 'text-gray-400'}>
+              {displayValue}
+            </span>
+          </TextInput>
+        </div>
       </Combobox.Target>
 
       <Combobox.Dropdown classNames={{ dropdown: classes.selectDropdown }}>
