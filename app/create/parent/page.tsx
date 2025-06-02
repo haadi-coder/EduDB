@@ -2,7 +2,7 @@
 
 import { Handbook } from '@/types/handbook';
 import { Button, Flex, Group, TextInput, Title } from '@mantine/core';
-import { isNotEmpty, matches, useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
 import { ParentFormValues } from './types/ParentFormValues';
 import { IconPlus } from '@tabler/icons-react';
@@ -50,7 +50,6 @@ const CreateParent: FC = () => {
       firstName: isNotEmpty(),
       lastName: isNotEmpty(),
       birthDate: isNotEmpty(),
-      phoneNumber: matches(/(?:\+|\d)[\d\-\(\) ]{9,}\d/g),
       role: isNotEmpty(),
     },
   });
@@ -130,7 +129,8 @@ const CreateParent: FC = () => {
             type="tel"
             label="Номер телефона"
             placeholder="8 (999) 999-99-99"
-            {...form.getInputProps('phoneNumber')}
+            onChange={value => form.setFieldValue('phoneNumber', value?.toString() || '')}
+            value={form.values.phoneNumber}
           />
           <div className="flex gap-5">
             {isChildrenEditable ? (
