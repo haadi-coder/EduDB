@@ -11,7 +11,7 @@ import { useStudentDelete } from './useStudentDelete';
 interface SelectedFilters {
   firstName: Handbook | null;
   lastName: Handbook | null;
-  birthDate: Handbook | null;
+  birthYear: Handbook | null;
   enrollmentYear: Handbook | null;
   parentId: Handbook | null;
 }
@@ -20,7 +20,7 @@ const Students: FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     firstName: null,
     lastName: null,
-    birthDate: null,
+    birthYear: null,
     enrollmentYear: null,
     parentId: null,
   });
@@ -67,18 +67,19 @@ const Students: FC = () => {
               onChange={item => setSelectedFilters(prev => ({ ...prev, lastName: item }))}
             /> */}
 
-            {/* <SelectAsync
-              className="w-full"
-              placeholder="Дата рождения"
-              options={filterOptions.studentsBirthDateOptions}
-              fetchOptions={async () => {
-                setSelectedFilters(prev => ({ ...prev, birthDate: null }));
-              }}
-              value={selectedFilters.birthDate}
-              onChange={item => setSelectedFilters(prev => ({ ...prev, birthDate: item }))}
-            /> */}
-
             <SelectAsync
+              className="w-full"
+              label="Год рождения"
+              placeholder="Выберите год рождения..."
+              options={filterOptions.studentsBirthYearOptions}
+              fetchOptions={async () => {
+                setSelectedFilters(prev => ({ ...prev, birthYear: null }));
+              }}
+              value={selectedFilters.birthYear}
+              onChange={item => setSelectedFilters(prev => ({ ...prev, birthYear: item }))}
+            />
+
+            {/* <SelectAsync
               className="w-full"
               label="Родитель"
               placeholder="Выберите родителя..."
@@ -88,7 +89,7 @@ const Students: FC = () => {
               }}
               value={selectedFilters.parentId}
               onChange={item => setSelectedFilters(prev => ({ ...prev, parentId: item }))}
-            />
+            /> */}
           </div>
           <ActionIcon mt={16} onClick={() => refetch()} size={36} color="#7c68ee">
             <IconReload size={18} />

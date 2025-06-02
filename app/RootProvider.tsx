@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import { useState } from 'react';
 import { Notifications } from '@mantine/notifications';
+import { DatesProvider } from '@mantine/dates';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -35,6 +36,16 @@ export const RootProvider = ({ children }) => {
                 },
               }),
             },
+            DatePickerInput: {
+              styles: () => ({
+                input: {
+                  backgroundColor: '#2e2e2e',
+                  borderColor: '#484848',
+                  color: '#c9c9c9',
+                },
+              }),
+            },
+
             Combobox: {
               styles: () => ({
                 dropdown: { backgroundColor: '#2e2e2e', borderColor: '#484848', color: '#c9c9c9' },
@@ -44,8 +55,10 @@ export const RootProvider = ({ children }) => {
         }}
       >
         <QueryClientProvider client={client}>
-          <Notifications />
-          <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
+          <DatesProvider settings={{ locale: 'ru', firstDayOfWeek: 0, weekendDays: [0] }}>
+            <Notifications />
+            <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
+          </DatesProvider>
         </QueryClientProvider>
       </MantineProvider>
     </>

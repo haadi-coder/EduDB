@@ -6,9 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 export interface StudentFilterSearchParams {
   firstName: Handbook | null;
   lastName: Handbook | null;
-  birthDate: Handbook | null;
+  birthYear: Handbook | null;
   enrollmentYear: Handbook | null;
   parentId: Handbook | null;
+  classTeacherId: Handbook | null;
 }
 
 export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams) => {
@@ -16,19 +17,21 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
     queryKey: [
       'students',
       searchParams?.lastName,
-      searchParams?.birthDate,
+      searchParams?.birthYear,
       searchParams?.firstName,
       searchParams?.enrollmentYear,
       searchParams?.parentId,
+      searchParams?.classTeacherId,
     ],
     queryFn: async (): Promise<Student[]> => {
       const response = await axios.get<unknown, AxiosResponse<Student[]>>(`/api/students`, {
         params: {
           fn: searchParams?.firstName?.label,
           ln: searchParams?.lastName?.label,
-          bd: searchParams?.birthDate?.label,
+          by: searchParams?.birthYear?.label,
           ey: searchParams?.enrollmentYear?.label,
           pi: searchParams?.parentId?.value,
+          ci: searchParams?.classTeacherId?.value,
         },
       });
 
@@ -41,12 +44,13 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
     return {
       data: [],
       filterOptions: {
-        studentsBirthDateOptions: [],
+        studentsBirthYearOptions: [],
         studentsEnrollmentYearOptions: [],
         studentsFirstNameOptions: [],
         studentsLastNameOptions: [],
         studentsOptions: [],
         studentParentOptions: [],
+        studentClassTeacherOptions: [],
       },
       ...rest,
     };
@@ -66,10 +70,10 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
-  const studentsBirthDateOptions: Handbook[] = data
+  const studentsBirthYearOptions: Handbook[] = data
     .map(student => ({
       value: student.id,
-      label: student.birthDate,
+      label: student.birthDate.split('.')[2],
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
@@ -94,13 +98,22 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
 
+  const studentClassTeacherOptions: Handbook[] = data
+    .map(student => ({
+      value: student.classTeacher?.id || '',
+      label: `${student.classTeacher?.lastName} ${student.classTeacher?.firstName}`,
+    }))
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .filter(item => item.label !== 'undefined undefined');
+
   const studentFilterOptions = {
     studentsFirstNameOptions,
     studentsLastNameOptions,
     studentsEnrollmentYearOptions,
-    studentsBirthDateOptions,
+    studentsBirthYearOptions,
     studentsOptions,
     studentParentOptions,
+    studentClassTeacherOptions,
   };
 
   return { data: data, filterOptions: studentFilterOptions, ...rest };

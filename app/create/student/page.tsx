@@ -11,6 +11,8 @@ import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
 import axios from 'axios';
 import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
 import { notifications } from '@mantine/notifications';
+import Link from 'next/link';
+import { DatePickerInput } from '@mantine/dates';
 
 const createStudent = async (data: StudentFormValues) => {
   const response = await axios.post(`/api/students`, data, {
@@ -27,15 +29,15 @@ const CreateStudent: FC = () => {
   const [selectedClassTeacher, setSelectedClassTeacher] = useState<Handbook | null>();
   const [selectedParent, setSelectedParent] = useState<Handbook | null>();
 
-  const [isStaffEditable, setIsStaffEditable] = useState(false);
-  const [isParentEditable, setIsParentEditable] = useState(false);
+  const [isStaffEditable] = useState(false);
+  const [isParentEditable] = useState(false);
 
   const form = useForm<StudentFormValues>({
     mode: 'controlled',
     initialValues: {
       firstName: '',
       lastName: '',
-      birthDate: '',
+      birthDate: null,
       enrollmentYear: 2025,
       classId: null,
       classTeacherId: null,
@@ -107,7 +109,9 @@ const CreateStudent: FC = () => {
               placeholder="Введите имя..."
               {...form.getInputProps('firstName')}
             />
-            <TextInput
+
+            <DatePickerInput
+              valueFormat="DD.MM.YYYY"
               className="w-full flex-5/12"
               label="Дата рождения"
               placeholder="дд.мм.гггг"
@@ -156,13 +160,13 @@ const CreateStudent: FC = () => {
                 }}
               />
             )}
-            <Button color="#7c68ee" onClick={() => setIsStaffEditable(prev => !prev)}>
+            <Button mt={5} color="#7c68ee" component={Link} href="/create/staff">
               {!isStaffEditable ? 'Добавить' : 'Выбрать'}
             </Button>
           </div>
 
           <div className="flex gap-4">
-            {isParentEditable ? (
+            {!isParentEditable ? (
               <TextInput
                 onChange={e => {
                   const [lastName, firstName] = e.currentTarget.value.split(' ');
@@ -184,8 +188,8 @@ const CreateStudent: FC = () => {
                 }}
               />
             )}
-            <Button color="#7c68ee" onClick={() => setIsParentEditable(prev => !prev)}>
-              {!isParentEditable ? 'Добавить' : 'Выбрать'}
+            <Button mt={5} color="#7c68ee" component={Link} href="/create/parent">
+              Добавить
             </Button>
           </div>
         </div>

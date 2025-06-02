@@ -42,7 +42,7 @@ export const NavButtons: FC = () => {
         </Menu.Dropdown>
       </Menu>
 
-      <Menu trigger="click">
+      {/* <Menu trigger="click">
         <Menu.Target>
           <Button
             color="#7c68ee"
@@ -66,7 +66,19 @@ export const NavButtons: FC = () => {
             Добавить Родителя
           </Menu.Item>
         </Menu.Dropdown>
-      </Menu>
+      </Menu> */}
+      <Button
+        color="#7c68ee"
+        variant={
+          currentPathname.startsWith('/create') || currentPathname.startsWith('/delete')
+            ? 'filled'
+            : 'subtle'
+        }
+        component={Link}
+        href="/create/student"
+      >
+        Добавление данных
+      </Button>
     </div>
   );
 };

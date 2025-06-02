@@ -2,7 +2,7 @@
 
 import { Handbook } from '@/types/handbook';
 import { Button, Flex, Group, TextInput, Title } from '@mantine/core';
-import { isNotEmpty, useForm } from '@mantine/form';
+import { isNotEmpty, matches, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
 import { ParentFormValues } from './types/ParentFormValues';
 import { IconPlus } from '@tabler/icons-react';
@@ -12,6 +12,8 @@ import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
 import { notifications } from '@mantine/notifications';
 import { SelectAsync } from '@/app/components/SelectAsync';
 import { useParentFilterQuery } from '@/app/search/parents/useParentsFilterQuery';
+import { DatePickerInput } from '@mantine/dates';
+import PhoneInput from 'react-phone-number-input/input';
 
 const createParent = async (data: ParentFormValues) => {
   const response = await axios.post(`/api/parents`, data, {
@@ -33,7 +35,7 @@ const CreateParent: FC = () => {
     initialValues: {
       firstName: '',
       lastName: '',
-      birthDate: '',
+      birthDate: null,
       childrenIds: [],
       child: {
         firstName: '',
@@ -48,7 +50,7 @@ const CreateParent: FC = () => {
       firstName: isNotEmpty(),
       lastName: isNotEmpty(),
       birthDate: isNotEmpty(),
-      phoneNumber: isNotEmpty(),
+      phoneNumber: matches(/(?:\+|\d)[\d\-\(\) ]{9,}\d/g),
       role: isNotEmpty(),
     },
   });
@@ -102,7 +104,8 @@ const CreateParent: FC = () => {
             {...form.getInputProps('firstName')}
           />
           <div className="flex gap-5">
-            <TextInput
+            <DatePickerInput
+              valueFormat="DD.MM.YYYY"
               className="w-full"
               label="Дата рождения"
               placeholder="дд.мм.гггг"
@@ -121,10 +124,12 @@ const CreateParent: FC = () => {
             />
           </div>
 
-          <TextInput
-            className="w-full"
+          <PhoneInput
+            country="RU"
+            className="w-full bg-[#2e2e2e] pl-3 py-1 rounded-sm border-gray-600 border-1 placeholder:text-[0.8rem] placeholder:text-[#b5bdc5]"
+            type="tel"
             label="Номер телефона"
-            placeholder="Введите номер..."
+            placeholder="8 (999) 999-99-99"
             {...form.getInputProps('phoneNumber')}
           />
           <div className="flex gap-5">

@@ -1,17 +1,16 @@
 'use client';
 
 import { Handbook } from '@/types/handbook';
-import { Button, Flex, Group, Stack, Switch, Text, TextInput, Title } from '@mantine/core';
+import { Button, Flex, Group, TextInput, Title } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import React, { FC, useState } from 'react';
 import { IconPlus } from '@tabler/icons-react';
-import { useStudentsFilterQuery } from '@/app/search/students/useStudentsFilterQuery';
 import axios from 'axios';
 import { StaffFormValues } from './types/StaffFormValues';
-import { MultiSelectAsync } from '@/app/components/MultiSelectAsync';
 import { notifications } from '@mantine/notifications';
 import { SelectAsync } from '@/app/components/SelectAsync';
 import { useStaffFilterQuery } from '@/app/search/staff/useStaffFilterQuery';
+import { DatePickerInput } from '@mantine/dates';
 
 const createStaff = async (data: StaffFormValues) => {
   const response = await axios.post(`/api/staff`, data, {
@@ -23,7 +22,7 @@ const createStaff = async (data: StaffFormValues) => {
 };
 
 const CreateStaff: FC = () => {
-  const [selectedStudents, setSelectedStudents] = useState<Handbook[]>([]);
+  // const [selectedStudents, setSelectedStudents] = useState<Handbook[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<Handbook | null>(null);
   const [isPositionEditable, setIsPositionEditable] = useState(false);
 
@@ -32,7 +31,7 @@ const CreateStaff: FC = () => {
     initialValues: {
       firstName: '',
       lastName: '',
-      birthDate: '',
+      birthDate: null,
       isClassTeacher: false,
       position: '',
       studentIds: [],
@@ -45,7 +44,7 @@ const CreateStaff: FC = () => {
     },
   });
 
-  const { filterOptions: children } = useStudentsFilterQuery();
+  // const { filterOptions: children } = useStudentsFilterQuery();
   const { filterOptions: staff } = useStaffFilterQuery();
 
   const handleSubmit = async (formValues: StaffFormValues) => {
@@ -54,7 +53,7 @@ const CreateStaff: FC = () => {
 
       if (status === 201 || status === 200) {
         form.reset();
-        setSelectedStudents([]);
+        // setSelectedStudents([]);
 
         notifications.show({
           title: 'Успешно',
@@ -93,7 +92,8 @@ const CreateStaff: FC = () => {
             {...form.getInputProps('firstName')}
           />
 
-          <TextInput
+          <DatePickerInput
+            valueFormat="DD.MM.YYYY"
             className="w-full"
             label="Дата рождения"
             placeholder="дд.мм.гггг"
@@ -133,7 +133,7 @@ const CreateStaff: FC = () => {
             </Button>
           </div>
 
-          <div className="flex gap-5">
+          {/* <div className="flex gap-5">
             <MultiSelectAsync
               label="Ученики"
               disabled={!form.values.isClassTeacher}
@@ -159,7 +159,7 @@ const CreateStaff: FC = () => {
                 {...form.getInputProps('isClassTeacher')}
               />
             </Stack>
-          </div>
+          </div> */}
         </div>
 
         <Flex justify="end">

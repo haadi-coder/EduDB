@@ -8,9 +8,10 @@ export const GET = async (request: NextRequest) => {
   const search = searchParams.get('s');
   const firstName = searchParams.get('fn');
   const lastName = searchParams.get('ln');
-  const birthDate = searchParams.get('bd');
+  const birthYear = searchParams.get('by');
   const enrollmentYear = searchParams.get('ey');
   const parentId = searchParams.get('pi');
+  const classTeacherId = searchParams.get('ci');
 
   const where: Prisma.StudentWhereInput = {};
 
@@ -29,8 +30,8 @@ export const GET = async (request: NextRequest) => {
     where.lastName = lastName;
   }
 
-  if (birthDate) {
-    where.birthDate = birthDate;
+  if (birthYear) {
+    where.birthDate = { contains: birthYear };
   }
 
   if (enrollmentYear) {
@@ -40,6 +41,8 @@ export const GET = async (request: NextRequest) => {
   if (parentId) {
     where.parentId = parentId;
   }
+
+  if (classTeacherId) where.classTeacherId = classTeacherId;
 
   const students = await prisma.student.findMany({
     where,

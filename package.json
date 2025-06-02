@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@mantine/core": "^8.0.1",
+    "@mantine/dates": "^8.0.1",
     "@mantine/form": "^8.0.1",
     "@mantine/hooks": "^8.0.1",
     "@mantine/notifications": "^8.0.1",
@@ -19,9 +20,11 @@
     "@tanstack/react-query": "^5.71.5",
     "@tanstack/react-query-next-experimental": "^5.71.5",
     "axios": "^1.8.4",
+    "dayjs": "^1.11.13",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-phone-number-input": "^3.4.12",
     "react-router-dom": "^7.4.1"
   },
   "devDependencies": {
