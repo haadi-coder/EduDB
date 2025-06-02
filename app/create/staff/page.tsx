@@ -94,6 +94,7 @@ const CreateStaff: FC = () => {
 
           <DatePickerInput
             valueFormat="DD.MM.YYYY"
+            maxDate={'2025.12.31'}
             className="w-full"
             label="Дата рождения"
             placeholder="дд.мм.гггг"

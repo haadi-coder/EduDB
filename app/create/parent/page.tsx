@@ -105,6 +105,7 @@ const CreateParent: FC = () => {
           <div className="flex gap-5">
             <DatePickerInput
               valueFormat="DD.MM.YYYY"
+              maxDate={'2025.12.31'}
               className="w-full"
               label="Дата рождения"
               placeholder="дд.мм.гггг"
