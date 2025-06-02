@@ -14,6 +14,7 @@ interface SelectedFilters {
   birthYear: Handbook | null;
   enrollmentYear: Handbook | null;
   parentId: Handbook | null;
+  classTeacherId: Handbook | null;
 }
 
 const Students: FC = () => {
@@ -23,6 +24,7 @@ const Students: FC = () => {
     birthYear: null,
     enrollmentYear: null,
     parentId: null,
+    classTeacherId: null,
   });
 
   const { data, refetch, filterOptions, isLoading } = useStudentsFilterQuery(selectedFilters);
