@@ -81,7 +81,7 @@ const CreateParent: FC = () => {
       });
     }
   };
-
+  console.log(form.values.phoneNumber.length);
   return (
     <div className="flex flex-col items-center">
       <Title mt={40}>Добавление родителя</Title>
@@ -105,7 +105,7 @@ const CreateParent: FC = () => {
           <div className="flex gap-5">
             <DatePickerInput
               valueFormat="DD.MM.YYYY"
-              maxDate={'2025.12.31'}
+              maxDate={'2025.06.31'}
               className="w-full"
               label="Дата рождения"
               placeholder="дд.мм.гггг"
@@ -131,7 +131,7 @@ const CreateParent: FC = () => {
             label="Номер телефона"
             placeholder="8 (999) 999-99-99"
             onChange={value => form.setFieldValue('phoneNumber', value?.toString() || '')}
-            value={form.values.phoneNumber}
+            value={form.values.phoneNumber.length > 12 ? '' : form.values.phoneNumber}
           />
           <div className="flex gap-5">
             {isChildrenEditable ? (

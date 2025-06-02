@@ -115,7 +115,7 @@ const CreateStudent: FC = () => {
               className="w-full flex-5/12"
               label="Дата рождения"
               placeholder="дд.мм.гггг"
-              maxDate={'2025.12.31'}
+              maxDate={'2025.06.31'}
               {...form.getInputProps('birthDate')}
             />
           </div>
