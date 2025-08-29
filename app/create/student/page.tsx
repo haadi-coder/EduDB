@@ -152,7 +152,7 @@ const CreateStudent: FC = () => {
             ) : (
               <SelectAsync
                 className="flex-1"
-                placeholder="Персонал"
+                placeholder="Класс. Рук."
                 options={classTeachers.staffClassTeacherOptions}
                 value={selectedClassTeacher || null}
                 onChange={payload => {
