@@ -74,7 +74,8 @@ export const useStaffFilterQuery = (searchParams?: StaffFilterSearchParams) => {
       value: staff.id,
       label: staff.position || '',
     }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const staffClassTeacherOptions: Handbook[] = data
     .filter(item => item.isClassTeacher === true)
@@ -82,7 +83,8 @@ export const useStaffFilterQuery = (searchParams?: StaffFilterSearchParams) => {
       value: staff.id,
       label: `${staff.lastName} ${staff.firstName}`,
     }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const staffFilterOptions = {
     staffFirstNameOptions,

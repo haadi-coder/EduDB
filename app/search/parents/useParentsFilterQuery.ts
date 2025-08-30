@@ -74,7 +74,8 @@ export const useParentFilterQuery = (searchParams?: ParentsFilterSearchParams) =
       value: parent.id,
       label: parent.role,
     }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const parentsOptions: Handbook[] = data
     .map(parent => ({

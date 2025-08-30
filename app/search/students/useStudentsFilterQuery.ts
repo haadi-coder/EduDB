@@ -75,21 +75,24 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
       value: student.id,
       label: student.birthDate.split('.')[2],
     }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const studentsEnrollmentYearOptions: Handbook[] = data
     .map(student => ({
       value: student.id,
       label: student.enrollmentYear.toString(),
     }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort();
 
   const studentsOptions: Handbook[] = data
     .map(student => ({
       value: student.id,
       label: `${student.lastName} ${student.firstName}`,
     }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const studentParentOptions: Handbook[] = data
     .map(student => ({
@@ -104,7 +107,8 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
       label: `${student.classTeacher?.lastName} ${student.classTeacher?.firstName}`,
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
-    .filter(item => item.label !== 'undefined undefined');
+    .filter(item => item.label !== 'undefined undefined')
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const studentFilterOptions = {
     studentsFirstNameOptions,

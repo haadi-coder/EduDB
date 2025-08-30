@@ -23,7 +23,8 @@ export const useClassesFilterQuery = () => {
 
   const classesNames: Handbook[] = data
     ?.map(item => ({ value: item.id, label: item.name }))
-    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label));
+    .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const classesFilterOptions = { classesNames };
 

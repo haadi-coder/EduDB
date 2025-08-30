@@ -48,12 +48,17 @@ const CreateStaff: FC = () => {
   const { filterOptions: staff } = useStaffFilterQuery();
 
   const handleSubmit = async (formValues: StaffFormValues) => {
+    if (formValues.position === 'Классный руководитель') {
+      formValues.isClassTeacher = true;
+    }
+
     try {
       const { status } = await createStaff(formValues);
 
       if (status === 201 || status === 200) {
         form.reset();
         // setSelectedStudents([]);
+        setSelectedPosition(null);
 
         notifications.show({
           title: 'Успешно',

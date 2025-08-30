@@ -56,7 +56,7 @@ export const RootProvider = ({ children }) => {
       >
         <QueryClientProvider client={client}>
           <DatesProvider settings={{ locale: 'ru', firstDayOfWeek: 0, weekendDays: [0] }}>
-            <Notifications />
+            <Notifications autoClose={10000}/>
             <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
           </DatesProvider>
         </QueryClientProvider>

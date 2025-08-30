@@ -65,6 +65,20 @@ const CreateStudent: FC = () => {
   const { filterOptions: parents } = useParentFilterQuery();
 
   const handleSubmit = async (formValues: StudentFormValues) => {
+    const birthYear = new Date(formValues.birthDate || '').getFullYear();
+    const isNotStudent =
+      formValues.enrollmentYear - birthYear < 6 || formValues.enrollmentYear - birthYear > 8;
+
+    if (isNotStudent) {
+      notifications.show({
+        title: 'Ошибка',
+        message: 'Неправильная разница между годом поступления и годом рождения',
+        color: 'red',
+      });
+
+      return;
+    }
+
     try {
       const { status } = await createStudent(formValues);
       if (status === 201 || status === 200) {

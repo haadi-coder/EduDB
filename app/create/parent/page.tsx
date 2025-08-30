@@ -138,7 +138,6 @@ const CreateParent: FC = () => {
               <TextInput
                 onChange={e => {
                   const [lastName, firstName] = e.currentTarget.value.split(' ');
-                  console.log(lastName, firstName);
                   form.setFieldValue('child.lastName', lastName ?? '');
                   form.setFieldValue('child.firstName', firstName ?? '');
                 }}
