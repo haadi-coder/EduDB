@@ -84,7 +84,7 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
       label: student.enrollmentYear.toString(),
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
-    .sort();
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const studentsOptions: Handbook[] = data
     .map(student => ({
