@@ -73,7 +73,7 @@ export const useStudentsFilterQuery = (searchParams?: StudentFilterSearchParams)
   const studentsBirthYearOptions: Handbook[] = data
     .map(student => ({
       value: student.id,
-      label: student.birthDate.split('.')[2],
+      label: student.birthDate.split('-')[0],
     }))
     .filter((item, index, arr) => index === arr.findIndex(s => s.label === item.label))
     .sort((a, b) => a.label.localeCompare(b.label));
