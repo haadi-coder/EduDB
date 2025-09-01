@@ -30,7 +30,6 @@ const CreateStudent: FC = () => {
   const [selectedParent, setSelectedParent] = useState<Handbook | null>();
 
   const [isStaffEditable] = useState(false);
-  const [isParentEditable] = useState(false);
 
   const form = useForm<StudentFormValues>({
     mode: 'controlled',
@@ -181,28 +180,17 @@ const CreateStudent: FC = () => {
           </div>
 
           <div className="flex gap-4">
-            {!isParentEditable ? (
-              <TextInput
-                onChange={e => {
-                  const [lastName, firstName] = e.currentTarget.value.split(' ');
-                  form.setFieldValue('parent.lastName', lastName);
-                  form.setFieldValue('parent.firstName', firstName);
-                }}
-                className="flex-1"
-                placeholder="Введите фамилию и имя родителя"
-              />
-            ) : (
-              <SelectAsync
-                className="flex-1"
-                placeholder="Родитель"
-                options={parents.parentsOptions}
-                value={selectedParent || null}
-                onChange={payload => {
-                  setSelectedParent(payload);
-                  form.setFieldValue('parentId', payload?.value || null);
-                }}
-              />
-            )}
+            <SelectAsync
+              className="flex-1"
+              placeholder="Родитель"
+              options={parents.parentsOptions}
+              value={selectedParent || null}
+              onChange={payload => {
+                setSelectedParent(payload);
+                form.setFieldValue('parentId', payload?.value || null);
+              }}
+            />
+
             <Button mt={5} color="#7c68ee" component={Link} href="/create/parent">
               Добавить
             </Button>
