@@ -53,17 +53,7 @@ export const POST = async (request: NextRequest) => {
       lastName: requestData.lastName,
       birthDate: requestData.birthDate,
       role: requestData.role,
-      childrens:
-        requestData.childrenIds.length !== 0
-          ? { connect: requestData.childrenIds }
-          : {
-              create: {
-                firstName: requestData.child.firstName,
-                lastName: requestData.child.lastName,
-                enrollmentYear: requestData.child.enrollmentYear,
-                birthDate: requestData.child.birthDate,
-              },
-            },
+      childrens: { connect: requestData.childrenIds },
 
       phoneNumber: requestData.phoneNumber,
     },
